@@ -1,0 +1,544 @@
+\documentclass[aspectratio=169,compress,t,xcolor=table]{beamer}
+
+%! Mandatory packages
+\usepackage[utf8]{inputenc}                                %! Character encoding
+\usepackage[T1]{fontenc}                                   %! Font encoding
+\usepackage[english]{babel}                                %! Language setting
+\usepackage{graphicx}
+
+%%%% Frame design
+\usetheme{Boadilla}                                        % Design base
+\usecolortheme{default}                                    % Color structure base
+  \newcommand{\myhfill}[1]{\hskip0pt plus 1filll {\small #1}}
+  \newcommand{\sidenote}[1]{\hskip0pt plus 1filll {\fcolorbox{sidenotebg}{sidenotebg}{\small\color{MyStructure} #1}}}
+
+% Colors
+\definecolor{MyBackground}{HTML}{FFFAEE}                   % Cream color with dark text works well for dyslexic readers: FFFAEE
+\definecolor{sidenotebg}{HTML}{FFE4A8}                   % Cream color with dark text works well for dyslexic readers: FFFAEE
+% \definecolor{MyBackground}{HTML}{FFFFFF}                   % White for online slides
+\setbeamercolor{background canvas}{bg=MyBackground}
+\definecolor{MyStructure}{HTML}{005471}
+\setbeamercolor{title}{fg=MyStructure}
+\setbeamercolor{frametitle}{fg=MyStructure}
+\setbeamercolor{structure}{fg=MyStructure}
+\definecolor{emphp}{HTML}{924700}
+\newcommand{\emphc}[1]{{\color{emphp}{#1}}}
+\definecolor{empho}{HTML}{007211}
+\newcommand{\empho}[1]{{\color{empho}{#1}}}
+\definecolor{emphh}{HTML}{CF0606}
+\newcommand{\emphh}[1]{{\color{emphh}{#1}}}
+\definecolor{MyOrange}{HTML}{D17402}
+\definecolor{MyPurple}{HTML}{4E008A}
+\definecolor{MyOrangeBox}{HTML}{F98A22}
+\definecolor{MyPurpleBox}{HTML}{4E008A}
+
+% Fonts
+\usepackage{FiraSans}
+\beamertemplatenavigationsymbolsempty                      % Disable navigation bar
+
+% Enumerate / itemize design
+\setbeamertemplate{enumerate items}[default]
+\setbeamertemplate{itemize items}{}
+\setbeamertemplate{itemize subitem}[circle]
+\setbeamertemplate{section in toc}[sections numbered]
+
+% % Add extra space on the right for Zoom video
+% \setbeamersize{text margin right=3.0cm}
+% \setlength{\leftmargini}{0pt}
+% \setbeamertemplate{background canvas}{\begin{tikzpicture}
+% \useasboundingbox (0,0) rectangle (\paperwidth,\paperheight);
+% \fill [color=MyStructure] (0.875\paperwidth,0) rectangle (\paperwidth,\paperheight);
+% \end{tikzpicture}} 
+
+% Footer
+\setbeamertemplate{footline}
+{
+ \hbox{%
+  \begin{beamercolorbox}[wd=.15\paperwidth,ht=2.6ex,dp=1ex,center]{section in foot}%
+    \usebeamerfont{section in foot}\insertshortauthor
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.8\paperwidth,ht=2.6ex,dp=1ex,center]{section in foot}%
+    \usebeamerfont{section in foot}\insertshorttitle
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.05\paperwidth,ht=2.6ex,dp=1ex,center]{subsection in foot}%
+    \usebeamerfont{section in foot} \color{MyStructure}{\insertframenumber}
+  \end{beamercolorbox}}%
+
+  \vskip0pt%
+}
+\setbeamertemplate{frametitle}[default][left]              % Push frame title to left
+\setbeamertemplate{navigation symbols}{}                   % Remove navigation symbols
+
+\renewcommand\textbullet{\ensuremath{\bullet}}             % Opress textbullet font warning
+\usepackage{appendixnumberbeamer}                          % Restart slide numbering for backup slides (\appendix)
+
+% Roadmap
+\usepackage{environ}
+\NewEnviron{roadmap}[1][]{%
+  \setbeamercolor{background canvas}{bg=MyStructure}
+  \setbeamercolor{normal text}{fg=MyBackground}
+  \begin{frame}[c]
+    \centerline{\huge \color{MyBackground} \textbf{#1}}
+  \end{frame}
+  \addtocounter{framenumber}{-1}
+}
+
+% Text packages
+% \usepackage{enumerate}                                     % Custom enumeration lists
+\usepackage{footmisc}                                      % Stable footnotes in headings
+\usepackage{natbib}                                        % Bibliography
+\usepackage{hyperref}                                      % Hyperreferences
+    \hypersetup{urlcolor=MyStructure}
+\usepackage{multicol}                                      % Multiple columns in text
+\usepackage[nointegrals]{wasysym}                          % WASY2 symbols for contradiction \lightning
+\usepackage{algorithm}                                     % Pseudocode packages
+\usepackage{algpseudocode}
+\usepackage{setspace}                                      % Custom line spacing
+% Better underline: https://alexwlchan.net/2017/10/latex-underlines/
+\usepackage{contour}
+\usepackage[normalem]{ulem}
+  \renewcommand{\ULdepth}{1.8pt}
+  \contourlength{0.8pt}
+  \newcommand{\ul}[1]{%
+    \uline{\phantom{#1}}%
+    \llap{\contour{MyBackground}{#1}}%
+  }
+
+% Figure and table packages
+\usepackage{float}                                         % Figure floats
+\usepackage[position=top,labelformat=empty]{subfig}        % Subfigures
+\usepackage{multirow}                                      % Merged rows in tables
+\usepackage{dcolumn}                                       % Custom table delimiters
+    \newcolumntype{d}[1]{D{.}{.}{#1}}
+    \newcommand\hd[1]{\multicolumn{1}{c}{#1}}
+\usepackage[labelfont=bf, font=normalsize]{caption}        % Bold captions
+    \captionsetup{format=hang}
+\usepackage{array}                                         % Reveal table by columns
+\usepackage{animate}                                       % Animated figures, GIF-like appearance
+\usepackage{media9}                                        % For \mediabutton
+\usepackage{booktabs}
+
+% Graphics packages
+\usepackage{tikz}                                          % TikZ drawings
+  \usetikzlibrary{patterns}
+\usepackage{pgfplots}                                      % PGFPlots plots
+  \pgfplotsset{compat=1.11}
+
+% Math packages
+\usepackage{amsmath}                                       % AMS math package
+\usepackage{mathtools}                                     % Extra math tools
+\usepackage{amssymb}                                       % Math symbols
+\usepackage{amsthm}                                        % Custom theorem environments
+\usepackage{units}                                         % Numerical fractions
+\usepackage{centernot}                                     % Logical negation in the middle of characters; e.g. not iff
+\usepackage{dsfont}                                        % For indicator function: \(\mathds{1}\)
+
+\renewcommand{\qedsymbol}{$\blacksquare$}                  % QED
+
+% Mathematical operators
+\DeclareMathOperator{\E}{\mathbb{E}}                       % Expected value
+\DeclareMathOperator{\Emax}{\E\!\max}                      % Emax
+\DeclareMathOperator{\var}{var}                            % Variance
+\DeclareMathOperator{\cov}{cov}                            % Covariance
+\DeclareMathOperator{\corr}{corr}                          % Correlation
+\DeclareMathOperator{\avar}{avar}                          % Asymptotic variance
+\DeclareMathOperator*{\plim}{plim}                         % Probability limit
+\DeclareMathOperator{\lag}{lag}                            % Lag operator
+\DeclareMathOperator{\rank}{rank}                          % Rank
+\DeclareMathOperator{\tr}{tr}                              % Trace
+\DeclareMathOperator{\diag}{diag}                          % Diagonal
+\DeclareMathOperator{\I}{I}                                % Identity matrix
+
+\providecommand{\abs}[1]{\left\lvert#1\right\rvert}        % Absolute value
+\providecommand{\norm}[1]{\left\lVert#1\right\rVert}       % Norm
+\providecommand{\ip}[1]{\left\langle#1\right\rangle}       % Inner product
+\providecommand{\csp}{\overline{\mathrm{sp}}}              % Closed span
+\providecommand{\pto}{\overset{p}{\to}}                    % Convergence in probability
+\providecommand{\dto}{\overset{d}{\to}}                    % Convergence in distribution
+
+
+% File paths
+\newcommand{\figpath}{"../../results/graphs/"}
+\newcommand{\idfigpath}{"../../results/graphs/identification/"}
+\newcommand{\tabpath}{"../../results/tables/"}
+
+
+\title[]{Empirical Economic Modeling}
+\subtitle{Labor}
+% % Single author
+\author[]{%
+  \texorpdfstring{%
+    Attila Gyetvai \\ \vspace*{0.5em} \footnotesize Bank of Portugal \& IZA \\ \href{https://attilagyetvai.com}{\color{MyStructure}\ul{attilagyetvai.com}}
+  }{Gyetvai}
+}
+% Multiple authors
+% \author[]{%
+%   \texorpdfstring{%
+%     \begin{columns}
+%       \column{.35\textwidth}
+%       \centering
+%       \normalsize Alastair Abigail \\ \scriptsize Somewhere Good \\ \vspace*{1em}
+%       \normalsize Lones Lawry \\ \scriptsize Somewhere Even Better \\
+%       \column{.3\textwidth}
+%       \centering
+%       \normalsize Attila Gyetvai \\ \scriptsize Bank of Portugal, IZA \\ \vspace*{1em}
+%       \normalsize John Smith \\ \scriptsize Good Place
+%     \end{columns}
+%   }
+%   {Arcidiacono, Gyetvai, Jardim, Maurel}
+% }
+\date[]{\footnotesize Spring 2024}
+
+
+\begin{document}
+
+{
+\setbeamertemplate{headline}{}            % Empty header
+\setbeamertemplate{footline}{\centerline{\tiny {\color{gray!50!white} The views expressed here are of the author and do not necessarily reflect those of the Bank of Portugal or the Eurosystem.}}\vspace*{10pt}}    % Disclaimer in footer
+\begin{frame}
+  \titlepage
+\end{frame}
+}
+\addtocounter{framenumber}{-1}
+
+\begin{frame}{Lecture plan}
+  \begin{itemize}
+    \vfill\item {\color{MyStructure}\textbf{Central research question in labor:}} What determines earnings?
+    \vfill\item Theory
+    \begin{itemize}
+      \addtolength{\baselineskip}{1em}
+      \item Labor demand: monopsony power, unintended policy consequences, \ldots
+      \item Labor supply: returns to skill, amenities/compensating differentials, luck, \ldots
+    \end{itemize}
+    \vfill\item Empirics
+    \begin{itemize}
+      \addtolength{\baselineskip}{1em}
+      \item Mincer earnings function
+      \item The AKM model
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+{
+\setbeamercolor{background canvas}{bg=sidenotebg}
+\begin{frame}{Journal rankings \myhfill{Sidenote}}
+  \begin{itemize}
+    \vfill\item Journal quality is a good (not perfect!) proxy for paper quality
+    \vfill\item Rankings are subjective---this is mine
+  \end{itemize}
+
+  \vfill{\scriptsize
+  \begin{center}
+    \begin{tabular}{ll}
+      \textbf{Top 5} & \textbf{2nd tier general interest} \\
+      American Economic Review (AER) & Economic Journal (EJ) \\
+      Econometrica (ECMA) & European Economic Review (EER) \\
+      Journal of Political Economy (JPE) & Journal of the European Economic Association (JEEA) \\
+      Quarterly Journal of Economics (QJE) & Review of Economics and Statistics (REStat) \\
+      Review of Economic Studies (REStud) & etc. \\[1em]
+      \textbf{Top field---labor} & \textbf{2nd tier field---labor} \\
+      American Economic Journal: Applied Economics (AEJ:Applied) & Journal of Human Resources (JHR) \\
+      American Economic Journal: Economic Policy (AEJ:Policy) & Labour Economics (LE) \\
+      Journal of Labor Economics (JOLE) & etc. \\
+    \end{tabular}
+  \end{center}
+  }
+\end{frame}
+}
+
+\begin{frame}{Mincer earnings function}
+Mincer, Jacob (1958). Investment in Human Capital and Personal Income Distribution. \textit{Journal of Political Economy 66}(4), 281–302.
+  \begin{center}
+    \includegraphics[height=0.6\textheight]{mincer.jpeg}
+  \end{center}
+\end{frame}
+\addtocounter{framenumber}{-1}
+
+\begin{frame}{Mincer earnings function}
+Mincer (1958 JPE). Investment in Human Capital and Personal Income Distribution \\ \phantom{you}
+  \begin{center}
+    \includegraphics[height=0.6\textheight]{mincer.jpeg}
+  \end{center}
+\end{frame}
+\addtocounter{framenumber}{-1}
+
+\begin{frame}{Mincer earnings function}
+Mincer (1958 JPE). Investment in Human Capital and Personal Income Distribution
+  \begin{itemize}
+    \vfill\item {\color{MyStructure}\textbf{Research question:}} How does schooling vs.\ experience shape earnings?
+    \vfill\item Theory:
+    \begin{itemize}
+      \item Single equation model: for worker \(i\),
+      \begin{align*}
+         \ln w_{i} = \beta_0 + \beta_1 \text{schooling}_i + \beta_2 \text{experience}_i + \beta_3 \text{experience}_i^2 + u_i
+      \end{align*}
+      \item No microfoundation (i.e., no behavior captured in a decision model)
+    \end{itemize}
+    \vfill\item Empirics:
+    \begin{itemize}
+      \item Estimate model on Census data
+      \item \(R^2\) was later found to be low
+    \end{itemize}
+    \vfill\item Long-lasting impact (c.f.\ Society of Labor Economists, Jacob Mincer Award)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Decomposing wage dispersion}
+Abowd, John M., Francis Kramarz and David N. Margolis (1999). High Wage Workers and High Wage Firms. \textit{Econometrica 67}(2), 251-333.
+  \begin{center}
+    \includegraphics[height=0.6\textheight]{abowd.jpeg} \hspace*{1em}
+    \includegraphics[height=0.6\textheight]{kramarz.jpeg} \hspace*{1em}
+    \includegraphics[height=0.6\textheight]{margolis.png}
+  \end{center}
+\end{frame}
+\addtocounter{framenumber}{-1}
+
+\begin{frame}{Decomposing wage dispersion}
+Abowd, Kramarz and Margolis (1999 ECMA). High Wage Workers and High Wage Firms \\ \phantom{you}
+  \begin{center}
+    \includegraphics[height=0.6\textheight]{abowd.jpeg} \hspace*{1em}
+    \includegraphics[height=0.6\textheight]{kramarz.jpeg} \hspace*{1em}
+    \includegraphics[height=0.6\textheight]{margolis.png}
+  \end{center}
+\end{frame}
+\addtocounter{framenumber}{-1}
+
+\begin{frame}{Decomposing wage dispersion}
+Abowd, Kramarz and Margolis (1999 ECMA). High Wage Workers and High Wage Firms
+  \begin{itemize}
+    \vfill\item {\color{MyStructure}\textbf{Research question:}} Are workers or firms the source of wage differences?
+    \vfill\item AKM regression: for worker \(i\) at time \(t\) at firm \(j(i,t)\),
+    \begin{align*}
+       y_{it} = \underbrace{\alpha_{i\phantom{j}}}_{\text{worker FE}} + \underbrace{\phi_{j(i,t)}}_{\text{firm FE}} + x_{it} \beta + u_{it}
+    \end{align*}
+    \vfill\item Nests the Mincer equation (\(x_{it} \beta\))
+    \vfill\item Identified off job-to-job movers (largest connected set)
+    \vfill\item Need lots of data! AKM popularized the use of linked employer-employee data
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Decomposing wage dispersion (cont'd)}
+Abowd, Kramarz and Margolis (1999 ECMA). High Wage Workers and High Wage Firms
+  \begin{itemize}
+    \vfill\item Variance decomposition: \pause
+    \begin{align*}
+       \var y_{it} &= \var \alpha_i + \var \phi_{j(i,t)} + \var x_{it} \beta \\
+       &+ 2 \cov (\alpha_i, \phi_{j(i,t)}) + 2 \cov (\alpha_i, x_{it} \beta) + 2 \cov(\phi_{j(i,t)}, x_{it} \beta) + \var u_{it}
+    \end{align*}
+    \vfill\item Commonly found estimates (Lopes de Melo, 2018 JPE):
+    \begin{align*}
+      \frac{\var \alpha_i}{\var y_{it}} \approx 0.6 \qquad \frac{\var \phi_{j(i,t)}}{\var y_{it}} \approx 0.2 \qquad \frac{\var x_{it}\beta}{\var y_{it}} \approx 0.1
+    \end{align*}
+    \(\Rightarrow\) differences across workers capture more wage variation than firms
+    \vfill\item Covariance terms capture sorting between workers and firms
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Where is the theory?}
+  \begin{itemize}
+    \vfill\item AKM is purposely atheoretical
+    \vfill\item Yet it is a very influential tool, used everywhere in economics
+    \vfill\item Canned estimation packages (Stata: \texttt{reghdfe} by Correia, 2016)
+    \vfill\item Microfoundations?
+    \begin{itemize}
+      \addtolength{\baselineskip}{0.5em}
+      \item Firms: product market power (Wong, 2023 WP AER R\&R)
+      \item[] \sidenote{Academic economics publication process}
+      \item Workers: half of the labor economics literature \\
+      \(\Rightarrow\) we cover one possible explanation next
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{The role of luck}
+McCall, John J. (1970). Economics of Information and Job Search. \textit{Quarterly Journal of Economics 84}(1), 113–126.
+  \begin{center}
+    \includegraphics[height=0.6\textheight]{mccall.jpg}
+  \end{center}
+\end{frame}
+\addtocounter{framenumber}{-1}
+
+\begin{frame}{The role of luck}
+McCall (1970 QJE). Economics of Information and Job Search \\ \phantom{,ou}
+  \begin{center}
+    \includegraphics[height=0.6\textheight]{mccall.jpg}
+  \end{center}
+\end{frame}
+\addtocounter{framenumber}{-1}
+
+\begin{frame}{The role of luck}
+McCall (1970 QJE). Economics of Information and Job Search
+  \begin{itemize}
+    \vfill\item {\color{MyStructure}\textbf{Research question:}} Why do ex ante identical workers earn different wages?
+    \vfill\item Some workers are lucky to get good job offers
+    \vfill\item Unemployed get UI benefit \(b\), draw a job offer at rate \(\lambda\) that pays \(w \sim F\)
+    \begin{align*}
+      (\lambda + \rho) V(b) = b + \lambda \Emax_w \left[ \nicefrac{w}{\rho}, V(b) \right] = b + \lambda \max \left[ \nicefrac{1}{\rho} \int w \, dF(w), V(b) \right]
+    \end{align*}
+    \vfill\item Solution: reservation wage strategy (accept offer if \(w \geq b\))
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{The Diamond paradox}
+Diamond, Peter A. (1971). A Model of Price Adjustment. \textit{Journal of Economic Theory 3}(2), 156-68.
+  \begin{center}
+    \includegraphics[height=0.6\textheight]{diamond.jpeg}
+  \end{center}
+\end{frame}
+\addtocounter{framenumber}{-1}
+
+\begin{frame}{The Diamond paradox}
+Diamond (1971 JET). A Model of Price Adjustment \\ \phantom{15}
+  \begin{center}
+    \includegraphics[height=0.6\textheight]{diamond.jpeg}
+  \end{center}
+\end{frame}
+\addtocounter{framenumber}{-1}
+
+\begin{frame}{The Diamond paradox}
+Diamond (1971 JET). A Model of Price Adjustment
+  \begin{itemize}
+    \vfill\item {\color{MyStructure}\textbf{Research question:}} Can wage dispersion arise in equilibrium?
+    \vfill\item Wages do not fall from the sky, firms choose them 
+    \vfill\item \(\Rightarrow\) wage offers reduce to a point
+    \vfill\item \(\Rightarrow\) no equilibrium wage dispersion!
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Resolving the Diamond paradox: on-the-job search}
+Burdett, Kenneth and Dale Mortensen (1998). Wage Differentials, Employer Size, and Unemployment. \textit{International Economic Review 39}(2), 257-73.
+  \begin{center}
+    \includegraphics[height=0.6\textheight]{burdett.jpg} \hspace*{1em}
+    \includegraphics[height=0.6\textheight]{mortensen.jpeg}
+  \end{center}
+  \begin{itemize}
+    \item[] \phantom{\sidenote{Academic economics publication process 2}}
+  \end{itemize}
+\end{frame}
+\addtocounter{framenumber}{-1}
+
+\begin{frame}{Resolving the Diamond paradox: on-the-job search}
+Burdett and Mortensen (1998 IER). Wages, Employer Size, and Unemployment \\ \phantom{you}
+  \begin{center}
+    \includegraphics[height=0.6\textheight]{burdett.jpg} \hspace*{1em}
+    \includegraphics[height=0.6\textheight]{mortensen.jpeg}
+  \end{center}
+  \begin{itemize}
+    \item[] \sidenote{Academic economics publication process 2}
+  \end{itemize}
+\end{frame}
+\addtocounter{framenumber}{-1}
+
+\begin{frame}{Resolving the Diamond paradox: on-the-job search}
+Burdett and Mortensen (1998 IER). Wages, Employer Size, and Unemployment
+  \begin{itemize}
+    \vfill\item {\color{MyStructure}\textbf{Research question:}} Can wage dispersion arise in equilibrium?
+    \vfill\item Some workers are lucky to get good job offers \textbf{on the job}
+    \vfill\item Unemployed get UI benefit \(b\), draw a job offer at rate \(\lambda_u\) that pays \(w' \sim F\) 
+    \vfill\item Employed get \(w\), are fired at rate \(\delta\), draw a job offer at rate \(\lambda_e\) that pays \(w' \sim F\)
+    \pause
+    \begin{align*}
+      (\lambda_u + \rho) V_u(b) &= b + \lambda_u \Emax_{w'} \left[ V_e(w'), V(b) \right] \\[0.5em]
+      (\lambda_e + \delta + \rho) V_e(w) &= w + \delta V_u(b) +  \lambda_e \Emax_{w'} \left[ V_e(w'), V_e(w) \right]
+    \end{align*}
+    \vfill\item This is only the worker side! But framework yields equilibrium wage dispersion
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Taking stock}
+  \begin{itemize}
+    \vfill\item {\color{MyStructure}\textbf{Central research question in labor:}} What determines earnings?
+    \vfill\item AKM: unobserved differences between workers are to blame for wage dispersion
+    \vfill\item Theory: luck could play a role
+    \begin{itemize}
+      \item Equilibrium search and matching (2010 Nobel to Diamond--Mortensen--Pissarides)
+      \item \textit{Huge} literature (wage bargaining, directed search, amenities, \ldots)
+    \end{itemize}
+    \vfill\item Empirics: how important a role does luck play?
+    \begin{itemize}
+      \item Fundamental identification issue: we do not observe rejected offers \(\Rightarrow\) structure!
+      \item Calibration: 4--29 percent (Taber and Vejlin, 2020 ECMA)
+      \item Computationally intensive, black box
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Empirics of job search}
+Arcidiacono, Peter S., Attila Gyetvai, Arnaud Maurel and Ekaterina Jardim (2023). Identification and Estimation of Continuous-Time Job Search Models with Preference Shocks. NBER Working Paper 30655, R\&R at the \textit{Review of Economic Studies}.
+  \begin{center}
+    \includegraphics[height=0.4\textheight]{arcidiacono.jpeg} \hspace*{1em}
+    \includegraphics[height=0.4\textheight]{gyetvai.jpg} \hspace*{1em}
+    \includegraphics[height=0.4\textheight]{maurel.jpeg} \hspace*{1em}
+    \includegraphics[height=0.4\textheight]{jardim.jpeg}
+  \end{center}
+\end{frame}
+\addtocounter{framenumber}{-1}
+
+\begin{frame}{Empirics of job search}
+Arcidiacono, Gyetvai, Maurel and Jardim (2023 NBER WP). CCP Search \\ \phantom{Identification and Estimation of Continuous-Time Job Search Models with Preference Shocks} \\ \phantom{NBER Working Paper 30655, R\&R at the \textit{Review of Economic Studies}.}
+  \begin{center}
+    \includegraphics[height=0.4\textheight]{arcidiacono.jpeg} \hspace*{1em}
+    \includegraphics[height=0.4\textheight]{gyetvai.jpg} \hspace*{1em}
+    \includegraphics[height=0.4\textheight]{maurel.jpeg} \hspace*{1em}
+    \includegraphics[height=0.4\textheight]{jardim.jpeg}
+  \end{center}
+\end{frame}
+\addtocounter{framenumber}{-1}
+
+\begin{frame}{Empirics of job search}
+Arcidiacono, Gyetvai, Maurel and Jardim (2023 NBER WP). CCP Search 
+  \begin{itemize}
+    \vfill\item {\color{MyStructure}\textbf{Research question:}} How to identify the structural parameters of search models?
+    \vfill\item Key idea: draw wage \(w' \sim F\) and preference shock \({\color{red}\varepsilon} \sim \text{Logistic}\)
+    \begin{align*}
+      (\lambda_u + \rho) V_u(b) &= b + \lambda_u \Emax_{w', {\color{red}\varepsilon}} \left[ V_e(w') + {\color{red}\varepsilon}, V(b) \right] \\[0.5em]
+      (\lambda_e + \delta + \rho) V_e(w) &= w + \delta V_u(b) +  \lambda_e \Emax_{w', {\color{red}\varepsilon}} \left[ V_e(w') + {\color{red}\varepsilon}, V_e(w) \right]
+    \end{align*}
+    \vfill\item Structural parameters are expressed in terms of conditional choice probabilities:
+    \begin{align*}
+      p_{ww'} = \frac{\exp(V_e(w'))}{\exp(V_e(w)) + \exp(V_e(w'))}
+    \end{align*}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Empirics of job search (cont'd)}
+Arcidiacono, Gyetvai, Maurel and Jardim (2023 NBER WP). CCP Search 
+  \begin{itemize}
+    \vfill\item {\color{MyStructure}\textbf{Research question:}} How to identify the structural parameters of search models?
+    \vfill\item Conditional choice probability (CCP) methods (IO literature, c.f.\ Rust, 1987)
+    \vfill\item Key difference: CCPs are not observed \(\Rightarrow\) we use the logit structure
+    \vfill\item Estimation is much easier than calibration before
+    \vfill\item Gyetvai (2024 WP): application to occupational mobility
+    \vfill\item[] \sidenote{Academic economics job market}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Frontiers of labor}
+  \begin{itemize}
+    \vfill\item {\color{MyStructure}\textbf{Central research question in labor:}} What determines earnings?
+    \begin{itemize}
+      \item Luck: we got to one point on the frontier
+      \item \ldots
+    \end{itemize}
+    \vfill\item Other central questions: 
+    \begin{itemize}
+      \item What determines employment status? \sidenote{Extensive vs.\ intensive margin}
+      \item What determines firms' organization structure?
+      \item \ldots
+    \end{itemize}
+    \vfill\item Things we do not cover: 
+    \begin{itemize}
+      \item Human capital formation/education
+      \item Scarring effect of unemployment, motherhood, health shocks, \ldots
+      \item Household decisions, matching on the marriage market
+      \item Networks
+      \item Minimum wage debate
+      \item Labor market power
+      \item \ldots
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+
+\end{document}
+

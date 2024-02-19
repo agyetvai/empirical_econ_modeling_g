@@ -1,0 +1,655 @@
+\documentclass[aspectratio=169,compress,t,xcolor=table]{beamer}
+
+%! Mandatory packages
+\usepackage[utf8]{inputenc}                                %! Character encoding
+\usepackage[T1]{fontenc}                                   %! Font encoding
+\usepackage[english]{babel}                                %! Language setting
+\usepackage{graphicx}
+
+%%%% Frame design
+\usetheme{Boadilla}                                        % Design base
+\usecolortheme{default}                                    % Color structure base
+  \newcommand{\myhfill}[1]{\hskip0pt plus 1filll {\small #1}}
+  \newcommand{\sidenote}[1]{\hskip0pt plus 1filll {\fcolorbox{sidenotebg}{sidenotebg}{\small\color{MyStructure} #1}}}
+
+% Colors
+\definecolor{MyBackground}{HTML}{FFFAEE}                   % Cream color with dark text works well for dyslexic readers: FFFAEE
+\definecolor{sidenotebg}{HTML}{FFE4A8}                   % Cream color with dark text works well for dyslexic readers: FFFAEE
+% \definecolor{MyBackground}{HTML}{FFFFFF}                   % White for online slides
+\setbeamercolor{background canvas}{bg=MyBackground}
+\definecolor{MyStructure}{HTML}{005471}
+\setbeamercolor{title}{fg=MyStructure}
+\setbeamercolor{frametitle}{fg=MyStructure}
+\setbeamercolor{structure}{fg=MyStructure}
+\definecolor{emphp}{HTML}{924700}
+\newcommand{\emphc}[1]{{\color{emphp}{#1}}}
+\definecolor{empho}{HTML}{007211}
+\newcommand{\empho}[1]{{\color{empho}{#1}}}
+\definecolor{emphh}{HTML}{CF0606}
+\newcommand{\emphh}[1]{{\color{emphh}{#1}}}
+\definecolor{MyOrange}{HTML}{D17402}
+\definecolor{MyPurple}{HTML}{4E008A}
+\definecolor{MyOrangeBox}{HTML}{F98A22}
+\definecolor{MyPurpleBox}{HTML}{4E008A}
+
+% Fonts
+\usepackage{FiraSans}
+\beamertemplatenavigationsymbolsempty                      % Disable navigation bar
+
+% Enumerate / itemize design
+\setbeamertemplate{enumerate items}[default]
+\setbeamertemplate{itemize items}{}
+\setbeamertemplate{itemize subitem}[circle]
+\setbeamertemplate{section in toc}[sections numbered]
+
+% % Add extra space on the right for Zoom video
+% \setbeamersize{text margin right=3.0cm}
+% \setlength{\leftmargini}{0pt}
+% \setbeamertemplate{background canvas}{\begin{tikzpicture}
+% \useasboundingbox (0,0) rectangle (\paperwidth,\paperheight);
+% \fill [color=MyStructure] (0.875\paperwidth,0) rectangle (\paperwidth,\paperheight);
+% \end{tikzpicture}} 
+
+% Footer
+\setbeamertemplate{footline}
+{
+ \hbox{%
+  \begin{beamercolorbox}[wd=.15\paperwidth,ht=2.6ex,dp=1ex,center]{section in foot}%
+    \usebeamerfont{section in foot}\insertshortauthor
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.8\paperwidth,ht=2.6ex,dp=1ex,center]{section in foot}%
+    \usebeamerfont{section in foot}\insertshorttitle
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.05\paperwidth,ht=2.6ex,dp=1ex,center]{subsection in foot}%
+    \usebeamerfont{section in foot} \color{MyStructure}{\insertframenumber}
+  \end{beamercolorbox}}%
+
+  \vskip0pt%
+}
+\setbeamertemplate{frametitle}[default][left]              % Push frame title to left
+\setbeamertemplate{navigation symbols}{}                   % Remove navigation symbols
+
+\renewcommand\textbullet{\ensuremath{\bullet}}             % Opress textbullet font warning
+\usepackage{appendixnumberbeamer}                          % Restart slide numbering for backup slides (\appendix)
+
+% Roadmap
+\usepackage{environ}
+\NewEnviron{roadmap}[1][]{%
+  \setbeamercolor{background canvas}{bg=MyStructure}
+  \setbeamercolor{normal text}{fg=MyBackground}
+  \begin{frame}[c]
+    \centerline{\huge \color{MyBackground} \textbf{#1}}
+  \end{frame}
+  \addtocounter{framenumber}{-1}
+}
+
+% Text packages
+% \usepackage{enumerate}                                     % Custom enumeration lists
+\usepackage{footmisc}                                      % Stable footnotes in headings
+\usepackage{natbib}                                        % Bibliography
+\usepackage{hyperref}                                      % Hyperreferences
+    \hypersetup{urlcolor=MyStructure}
+\usepackage{multicol}                                      % Multiple columns in text
+\usepackage[nointegrals]{wasysym}                          % WASY2 symbols for contradiction \lightning
+\usepackage{algorithm}                                     % Pseudocode packages
+\usepackage{algpseudocode}
+\usepackage{setspace}                                      % Custom line spacing
+% Better underline: https://alexwlchan.net/2017/10/latex-underlines/
+\usepackage{contour}
+\usepackage[normalem]{ulem}
+  \renewcommand{\ULdepth}{1.8pt}
+  \contourlength{0.8pt}
+  \newcommand{\ul}[1]{%
+    \uline{\phantom{#1}}%
+    \llap{\contour{MyBackground}{#1}}%
+  }
+  \newcommand{\uly}[1]{%
+    \uline{\phantom{#1}}%
+    \llap{\contour{sidenotebg}{#1}}%
+  }
+
+% Figure and table packages
+\usepackage{float}                                         % Figure floats
+\usepackage[position=top,labelformat=empty]{subfig}        % Subfigures
+\usepackage{multirow}                                      % Merged rows in tables
+\usepackage{dcolumn}                                       % Custom table delimiters
+    \newcolumntype{d}[1]{D{.}{.}{#1}}
+    \newcommand\hd[1]{\multicolumn{1}{c}{#1}}
+\usepackage[labelfont=bf, font=normalsize]{caption}        % Bold captions
+    \captionsetup{format=hang}
+\usepackage{array}                                         % Reveal table by columns
+\usepackage{animate}                                       % Animated figures, GIF-like appearance
+\usepackage{media9}                                        % For \mediabutton
+\usepackage{booktabs}
+
+% Graphics packages
+\usepackage{tikz}                                          % TikZ drawings
+  \usetikzlibrary{patterns}
+\usepackage{pgfplots}                                      % PGFPlots plots
+  \pgfplotsset{compat=1.11}
+
+% Math packages
+\usepackage{amsmath}                                       % AMS math package
+\usepackage{mathtools}                                     % Extra math tools
+\usepackage{amssymb}                                       % Math symbols
+\usepackage{amsthm}                                        % Custom theorem environments
+\usepackage{units}                                         % Numerical fractions
+\usepackage{centernot}                                     % Logical negation in the middle of characters; e.g. not iff
+\usepackage{dsfont}                                        % For indicator function: \(\mathds{1}\)
+
+\renewcommand{\qedsymbol}{$\blacksquare$}                  % QED
+
+% Mathematical operators
+\DeclareMathOperator{\E}{\mathbb{E}}                       % Expected value
+\DeclareMathOperator{\Emax}{\E\!\max}                      % Emax
+\DeclareMathOperator{\var}{var}                            % Variance
+\DeclareMathOperator{\cov}{cov}                            % Covariance
+\DeclareMathOperator{\corr}{corr}                          % Correlation
+\DeclareMathOperator{\avar}{avar}                          % Asymptotic variance
+\DeclareMathOperator*{\plim}{plim}                         % Probability limit
+\DeclareMathOperator{\lag}{lag}                            % Lag operator
+\DeclareMathOperator{\rank}{rank}                          % Rank
+\DeclareMathOperator{\tr}{tr}                              % Trace
+\DeclareMathOperator{\diag}{diag}                          % Diagonal
+\DeclareMathOperator{\I}{I}                                % Identity matrix
+
+\providecommand{\abs}[1]{\left\lvert#1\right\rvert}        % Absolute value
+\providecommand{\norm}[1]{\left\lVert#1\right\rVert}       % Norm
+\providecommand{\ip}[1]{\left\langle#1\right\rangle}       % Inner product
+\providecommand{\csp}{\overline{\mathrm{sp}}}              % Closed span
+\providecommand{\pto}{\overset{p}{\to}}                    % Convergence in probability
+\providecommand{\dto}{\overset{d}{\to}}                    % Convergence in distribution
+
+
+% File paths
+\newcommand{\figpath}{"../../results/graphs/"}
+\newcommand{\idfigpath}{"../../results/graphs/identification/"}
+\newcommand{\tabpath}{"../../results/tables/"}
+
+
+\title[]{Empirical Economic Modeling}
+\subtitle{Structuralist/experimentalist/unified approaches}
+% % Single author
+\author[]{%
+  \texorpdfstring{%
+    Attila Gyetvai \\ \vspace*{0.5em} \footnotesize Bank of Portugal \& IZA \\ \href{https://attilagyetvai.com}{\color{MyStructure}\ul{attilagyetvai.com}}
+  }{Gyetvai}
+}
+% Multiple authors
+% \author[]{%
+%   \texorpdfstring{%
+%     \begin{columns}
+%       \column{.35\textwidth}
+%       \centering
+%       \normalsize Alastair Abigail \\ \scriptsize Somewhere Good \\ \vspace*{1em}
+%       \normalsize Lones Lawry \\ \scriptsize Somewhere Even Better \\
+%       \column{.3\textwidth}
+%       \centering
+%       \normalsize Attila Gyetvai \\ \scriptsize Bank of Portugal, IZA \\ \vspace*{1em}
+%       \normalsize John Smith \\ \scriptsize Good Place
+%     \end{columns}
+%   }
+%   {Arcidiacono, Gyetvai, Jardim, Maurel}
+% }
+\date[]{\footnotesize Spring 2024}
+
+
+\begin{document}
+
+{
+\setbeamertemplate{headline}{}            % Empty header
+\setbeamertemplate{footline}{\centerline{\tiny {\color{gray!50!white} The views expressed here are of the author and do not necessarily reflect those of the Bank of Portugal or the Eurosystem.}}\vspace*{10pt}}    % Disclaimer in footer
+\begin{frame}
+  \titlepage
+\end{frame}
+}
+\addtocounter{framenumber}{-1}
+
+\begin{frame}{Illustration: labor choice}
+  \begin{itemize}
+    \vfill\item What is the effect of wages \(w\) on hours worked \(h\)?
+    \vfill\item Given data \((w_i, h_i)_{i=1}^{N}\), estimate this regression:
+    \begin{align*}
+      \ln h_i = \beta_0 + \beta_1 \ln w_i + u_i
+    \end{align*}
+    \vfill\item In Stata: \texttt{regress lnh lnw, vce(robust)}
+    \vfill\item \sidenote{\texttt{vce(robust)} calculates White-corrected standard errors}      
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Illustration: labor choice (cont'd)}
+  \begin{itemize}
+    \vfill\item What is the most parsimonious model that reduces to this equation? 
+    \vfill\item \sidenote{Economics research is all about empathy} \pause
+    \begin{align*}
+      \max_{c,h} \quad & u(c, h) = c - \gamma h^{\alpha} \\
+      \text{s.t.} \quad  & c \leq wh
+    \end{align*}
+
+
+    \pause
+    \begin{align*}
+      \leadsto \quad h = (\gamma \alpha)^{\frac{1}{1-\alpha}} w^{\frac{1}{\alpha-1}} \quad \Rightarrow \quad \ln h = \underbrace{\frac{1}{1-\alpha} \ln (\gamma\alpha)}_{\doteq \beta_0} + \underbrace{\frac{1}{\alpha-1}}_{\doteq \beta_1} \ln w 
+    \end{align*}
+
+    \item \sidenote{\(\beta_1\) is called \ldots \pause the wage elasticity of labor supply}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Illustration: labor choice (cont'd)}
+  \begin{itemize}
+    \vfill\item Structural model with {\color{MyOrange}structural parameters}:
+    \begin{align*}
+      \max_{c,h} \quad & u(c, h) = c - {\color{MyOrange}\gamma} h^{{\color{MyOrange}\alpha}} \\
+      \text{s.t.} \quad  & c \leq wh
+    \end{align*}
+
+    \vfill\item Reduced form with {\color{MyPurple}reduced-form parameters}:
+    \begin{align*}
+      \ln h = {\color{MyPurple}\beta_0} + {\color{MyPurple}\beta_1} \ln w
+    \end{align*}
+
+    \vfill\item We just showed how to reduce the structural model:
+    \begin{align*}
+      {\color{MyPurple}\beta_0} &= \frac{1}{1-{\color{MyOrange}\alpha}} \ln ({\color{MyOrange}\gamma\alpha}) \\
+      {\color{MyPurple}\beta_1} &= \frac{1}{{\color{MyOrange}\alpha}-1}
+    \end{align*}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{General concepts}
+  \begin{itemize}
+    \vfill\item Structural model:
+    \begin{itemize}
+      \item Full model of economic behavior
+      \item Structural parameters capture mechanisms
+    \end{itemize}
+
+    \vfill\item Reduced form:
+    \begin{itemize}
+      \item Reduced-form parameters are a function of structural parameters
+      \item The function is not necessarily invertible!
+      \item I.e., you might not be able to recover the structural parameters from the reduced form
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Why model economic behavior?}
+  We cannot observe behavior (at scale), only outcomes
+  \begin{center}
+    \includegraphics[width=0.4\textwidth]{capybara1.jpeg} \\
+    \includegraphics[width=0.4\textwidth]{capybara2.jpeg}
+  \end{center}
+\end{frame}
+\addtocounter{framenumber}{-1}
+
+\begin{frame}{Why model economic behavior?}
+  \begin{itemize}
+    \vfill\item We want to understand how the world works
+    \begin{itemize}
+      \item What mechanisms are at play?
+      \item How do aggregate outcomes emerge?
+    \end{itemize}
+
+    \vfill\item We want to understand what a different world would be like
+    \begin{itemize}
+      \item What if parameters would take a different value?
+      \item What if we shut down certain mechanisms?
+    \end{itemize}
+
+    \vfill\item We want to understand how policies affect outcomes
+
+    \vfill\item \(\Rightarrow\) We need both theory and empirics
+    \begin{itemize}
+      \item Only theory: cannot assess real-world relevance
+      \item Only empirics: cannot interpret/extrapolate from results
+    \end{itemize}
+
+    \vfill\item \sidenote{Example 1: markets for lemons}
+    \item \sidenote{Example 2: American Recovery and Reinvestment Act of 2009}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{A \textbf{very} brief history of modern economic thought}
+  \begin{itemize}
+    \vfill\item 1930: Econometric Society 
+    \begin{itemize}
+      \item ``for the advancement of economic theory in its relation to statistics and mathematics''
+    \end{itemize}
+
+    \vfill\item 1939: Cowles Commission
+    \begin{itemize}
+      \item Explicit probabilistic framework + simultaneous equations model
+      % \item Identification problem
+      % \item Methods of estimation and hypothesis testing
+      % \item Structural equations and reduced form meant something else
+    \end{itemize}
+
+    \vfill\item 1976: the Lucas critique
+    \begin{itemize}
+      \item Tomorrow's behavior will adapt to today's policy so one cannot blindly forecast
+    \end{itemize}
+
+    \vfill\item '70s--'80s: microfoundations
+    \begin{itemize}
+      \item Better theory: ``deep'' parameters
+    \end{itemize}
+
+    \vfill\item '90s--'00s: the Credibility Revolution
+    \begin{itemize}
+      \item Better empirics: (quasi-)experimental research designs
+    \end{itemize}
+
+    \vfill\item '10s onwards: the ``Great Reunification''
+    \begin{itemize}
+      \item Cutting-edge papers combine theory with empirics
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+{
+\setbeamercolor{background canvas}{bg=sidenotebg}
+\begin{frame}{How I read economics papers \myhfill{Sidenote}}
+  \begin{itemize}
+    \vfill\item I don't read papers and you shouldn't either
+
+    \pause
+    \vfill\item 
+    \begin{center}
+      \begin{tabular}{cll}
+        \color{MyStructure} 1. & Authors, title, abstract & \(\Rightarrow\) relevance to my work \\[0.5em]
+        \color{MyStructure} 2. & Beginning of introduction & \(\Rightarrow\) importance \\[0.5em]
+        \color{MyStructure} 3. & ``In this paper [\ldots]'' & \(\Rightarrow\) what the paper does \\[0.5em]
+        \color{MyStructure} 4. & Skim model section & \(\Rightarrow\) how the paper does it \\[0.5em]
+        \color{MyStructure} 5. & End of abstract & \(\Rightarrow\) headline result \\[0.5em]
+        \color{MyStructure} 6. & End of introduction & \(\Rightarrow\) (policy) implications \\[0.5em]
+        \color{MyStructure} 7. & Literature review & \(\Rightarrow\) contribution
+      \end{tabular}
+    \end{center}
+
+    \vfill\item Conditional on making it past 1., average time to ``read'' is 45 seconds
+    \vfill\item Instead of reading lots of papers, \textit{learn} the few relevant ones
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{My ideal structure for a successful introduction \myhfill{Sidenote}}
+  \begin{itemize}
+    \vfill\item
+    \begin{center}
+      \begin{tabular}{cll}
+        \color{MyStructure} 1. & Hook & setting the scene \\[0.5em]
+        \color{MyStructure} 2. & What we do & research question \& headline result \\[0.5em]
+        \color{MyStructure} 3. & Why we do it & relevance \\[0.5em]
+        \color{MyStructure} 4. & How we do it & methods \\[0.5em]
+        \color{MyStructure} 5. & What we find & results \\[0.5em]
+        \color{MyStructure} 6. & What we learn & policy implications \\[0.5em]
+        \color{MyStructure} 7. & What the contribution is & literature overview
+      \end{tabular}
+    \end{center}
+
+    \vfill\item I expect the introduction of your papers to follow this structure
+  \end{itemize}
+\end{frame}
+}
+
+\begin{frame}{'70s--'80s: microfoundations \myhfill{Example}}
+Rust, John (1987). Optimal Replacement of GMC Bus Engines: An Empirical Model of Harold Zurcher. \textit{Econometrica 55}(5), 999-1033.
+  \begin{center}
+    \includegraphics[height=0.6\textheight]{rust_1.JPG} \hspace*{1em}
+    \includegraphics[height=0.6\textheight]{rust_2.JPG}
+  \end{center}
+\end{frame}
+\addtocounter{framenumber}{-1}
+
+\begin{frame}{'70s--'80s: microfoundations \myhfill{Example}}
+Rust (1987 ECMA). An Empirical Model of Harold Zurcher \\ \phantom{99,}
+  \begin{center}
+    \includegraphics[height=0.6\textheight]{rust_1.JPG} \hspace*{1em}
+    \includegraphics[height=0.6\textheight]{rust_2.JPG}
+  \end{center}
+\end{frame}
+\addtocounter{framenumber}{-1}
+
+\begin{frame}{'70s--'80s: microfoundations \myhfill{Example}}
+Rust (1987 ECMA). An Empirical Model of Harold Zurcher
+  \begin{itemize}
+    \vfill\item {\color{MyStructure}\textbf{Research question:}} When to replace bus engines?
+    \vfill\item Theory
+    \begin{itemize}
+      \item Optimal stopping problem
+      \item Stochastic engine failure, mileage accumulation
+      \item If replace engine, mileage resets \(\Rightarrow\) replace engine if above threshold mileage
+    \end{itemize}
+    \vfill\item Empirics
+    \begin{itemize}
+      \item Data on bus engine replacement record in Madison, WI (Harold Zurcher)
+      \item Nested fixed point MLE algorithm does not require a full solution
+      \item Implied demand for bus engine replacement
+    \end{itemize}
+
+    \vfill\item Meta paper, famous for its technical contribution
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Structuralist approach}
+  \begin{enumerate}
+    \vfill\item[0.] Formulate a relevant and important research question
+    \vfill\item Propose a structural model that can answer it
+    \vfill\item Obtain structural parameter values from data
+    \vfill\item Simulate policy counterfactuals
+    \vfill\item[]
+    \begin{center}
+      \begin{tabular}{ll}
+        \qquad \color{MyStructure}\textbf{+} & \qquad \color{MyStructure}\textbf{--} \\
+        Can do counterfactuals & Entry cost can be large \\
+        Can illustrate mechanisms & Empirical methods can be opaque \\
+        Can pit mechanisms against each other & Can be hard to communicate \\
+        Can be used as building blocks \\
+      \end{tabular}
+    \end{center}
+    \vfill\item[] \sidenote{Estimation vs.\ calibration}
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{'90s--'00s: the Credibility Revolution \myhfill{Example}}
+Angrist, Joshua D. (1990). Lifetime Earnings and the Vietnam Era Draft Lottery: Evidence from Social Security Administrative Records. \textit{American Economic Review 80}(3), 313-336.
+  \begin{center}
+    \includegraphics[height=0.6\textheight]{angrist.JPG}
+  \end{center}
+\end{frame}
+\addtocounter{framenumber}{-1}
+
+\begin{frame}{'90s--'00s: the Credibility Revolution \myhfill{Example}}
+Angrist (1990 AER). Lifetime Earnings and Vietnam Era Draft Lottery \\ \phantom{you}
+  \begin{center}
+    \includegraphics[height=0.6\textheight]{angrist.JPG}
+  \end{center}
+\end{frame}
+\addtocounter{framenumber}{-1}
+  
+\begin{frame}{'90s--'00s: the Credibility Revolution \myhfill{Example}}
+Angrist (1990 AER). Lifetime Earnings and Vietnam Era Draft Lottery
+  \begin{itemize}
+    \vfill\item {\color{MyStructure}\textbf{Research question:}} How large are the earnings losses of veterans?
+    \vfill\item Theory
+    \begin{itemize}
+      \item ``[M]ilitary experience is a poor substitute for lost civilian labor market experience''
+      \item Return to experience is lower for veterans
+    \end{itemize}
+    \vfill\item Empirics
+    \begin{itemize}
+      \item Vietnam draft lottery (Random Sequence Number 1--365)
+      \item Compare earnings of drafted vs.\ non-drafted after the war
+    \end{itemize}
+
+    \vfill\item Non-technical paper, famous for quasi-experimental research design
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Experamentalist approach}
+  \begin{enumerate}
+    \vfill\item[0.] Formulate a relevant and important research question
+    \vfill\item Find a (quasi-)experiment that can answer it
+    \vfill\item Calculate treatment effect
+    \vfill\item[]
+    \begin{center}
+      \begin{tabular}{ll}
+        \qquad \color{MyStructure}\textbf{+} & \qquad \color{MyStructure}\textbf{--} \\
+        Easy to implement & Cannot do counterfactuals \\
+        Research design is credible & Can be hard/impossible to find (quasi-)experiments \\
+        Easier to communicate & Tempting to be atheoretical \\
+      \end{tabular}
+    \end{center}
+
+  \vfill\item[] \sidenote{``Structural'' vs.\ ``reduced-form'' camps}
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{'10s onwards: the ``Great Reunification'' \myhfill{Example 1}}
+Méndez, Esteban and Diana Van Patten (2022). Multinationals, Monopsony, and Local Development: Evidence from the United Fruit Company. \textit{Econometrica 90}(6), 2685-2721.
+  \begin{center}
+    \includegraphics[height=0.6\textheight]{vanpatten.JPG} \hspace*{1em}
+    \includegraphics[height=0.6\textheight]{vanpatten_mendez.JPG}
+  \end{center}
+\end{frame}
+\addtocounter{framenumber}{-1}
+
+\begin{frame}{'10s onwards: the ``Great Reunification'' \myhfill{Example 1}}
+Méndez and Van Patten (2022 ECMA). Multinationals, Monopsony, and Development \\ \phantom{you}
+  \begin{center}
+    \includegraphics[height=0.6\textheight]{vanpatten.JPG} \hspace*{1em}
+    \includegraphics[height=0.6\textheight]{vanpatten_mendez.JPG}
+  \end{center}
+\end{frame}
+\addtocounter{framenumber}{-1}
+
+\begin{frame}{'10s onwards: the ``Great Reunification'' \myhfill{Example 1}}
+Méndez and Van Patten (2022 ECMA). Multinationals, Monopsony, and Development 
+  \begin{itemize}
+    \vfill\item {\color{MyStructure}\textbf{Research question:}} How does foreign investment impact domestic economies?
+    \vfill\item Theory
+    \begin{itemize}
+      \item Foreign multinationals attract domestic workers by providing amenities \ldots
+      \item \ldots so that they can leverage monopsony power
+      \item Long-run impact of investment in living standards
+    \end{itemize}
+    \vfill\item Empirics
+    \begin{itemize}
+      \item Historical example: the United Fruit Company in Costa Rica, 1899--1984
+      \item Use land concession boundaries to estimate treatment effects
+      \item Use reduced-form techniques to rule out alternative mechanisms
+      \item Build and estimate a parsimonious model to capture mechanisms
+    \end{itemize}
+
+    \vfill\item Insane amount of work (data, empirics---model is in Online Appendix V!)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{'10s onwards: the ``Great Reunification'' \myhfill{Example 2}}
+Bilal, Adrien (2023). The Geography of Unemployment. \textit{Quarterly Journal of Economics 138}(3), 1507-1576.
+  \begin{center}
+    \includegraphics[height=0.6\textheight]{bilal.jpeg}
+  \end{center}
+\end{frame}
+\addtocounter{framenumber}{-1}
+
+\begin{frame}{'10s onwards: the ``Great Reunification'' \myhfill{Example 2}}
+Bilal (2023 QJE). The Geography of Unemployment \\ \phantom{,ou}
+  \begin{center}
+    \includegraphics[height=0.6\textheight]{bilal.jpeg}
+  \end{center}
+\end{frame}
+\addtocounter{framenumber}{-1}
+
+\begin{frame}{'10s onwards: the ``Great Reunification'' \myhfill{Example 2}}
+Bilal (2023 QJE). The Geography of Unemployment
+  \begin{itemize}
+    \vfill\item {\color{MyStructure}\textbf{Research question:}} Why is unemployment high in some places and low in others?
+    \vfill\item Theory
+    \begin{itemize}
+      \item Employers choose locations based on productivity
+      \item \(\Rightarrow\) spatial differences in local job losing (not finding!) rates
+    \end{itemize}
+    \vfill\item Empirics
+    \begin{itemize}
+      \item Shows reduced-form evidence that local job losing rates vary, job finding rates do not
+      \item Builds and estimates an extended structural model
+    \end{itemize}
+
+    \vfill\item Masterclass in writing (empirical pattern \(\rightarrow\) toy model \(\rightarrow\) full model \(\rightarrow\) policy)
+    \item Debate: Kuhn, Manovskii and Qiu (2022a, 2022b) point out the role of vacancy flows
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Unified approach}
+  \begin{enumerate}
+    \vfill\item[0.] Formulate a relevant and important research question
+    \vfill\item Describe the underlying economic behavior
+    \begin{itemize}
+      \item Propose the most parsimonious model \ldots
+      \item \ldots that captures all the relevant agents and most important mechanisms
+    \end{itemize}
+    \vfill\item Describe the ideal experiment that could identify the structural parameters
+    \vfill\item Attempt to reduce the model
+    \begin{itemize}
+      \item Goal is to estimate the reduced-form parameters given data
+      \item If not possible, estimate/calibrate the structural model
+    \end{itemize}
+    \vfill\item Quantify policy implications
+    \begin{itemize}
+      \item Reduced form \enskip \(\Rightarrow\) do back-of-the-envelope calculations and add lots of caveats
+      \item Structural form \(\Rightarrow\) be careful with parsimony
+    \end{itemize}
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}[c]{Unified approach (cont'd)}
+  \begin{itemize}
+    \vfill\item Golden mean of structural and experimentalist approaches
+    \vfill\item Pitfalls and solutions:
+    \begin{itemize}
+      \item Requires many skills \hspace*{9.5em} \(\Rightarrow\) work in teams
+      \item Takes time \hspace*{13.2em}\quad\(\Rightarrow\) plan accordingly
+      \item Tempting to claim causality \hspace*{6.7em}\(\Rightarrow\) communicate results carefully
+      \item Tempting to oversell policy implications \quad\(\Rightarrow\) communicate results carefully
+    \end{itemize}
+    \vfill\item I expect you to follow the unified approach in your projects
+  \end{itemize}
+\end{frame}
+
+{
+\setbeamercolor{background canvas}{bg=sidenotebg}
+\begin{frame}[c]{Economics research \(\sim\) music production \myhfill{Sidenote}}
+  \begin{center}
+    \includegraphics[height=0.225\textwidth]{chadsmith.jpeg} \hspace*{1em}
+    \includegraphics[height=0.225\textwidth]{dualipa.jpg} \hspace*{1em}
+    \includegraphics[height=0.225\textwidth]{andrewwatt.jpg} \hspace*{1em} \ldots \\[0.5em]
+    \includegraphics[width=0.444\textwidth]{nashville.jpeg}
+  \end{center}
+\end{frame}
+}
+
+\begin{frame}[c]{}
+  \begin{enumerate}
+    \addtolength{\baselineskip}{1em}
+    \item Always think about the underlying economic behavior!
+    \item Follow the unified approach for your projects
+    \item Use the structure for your introduction
+  \end{enumerate}
+
+  \vspace*{3em}
+  \begin{itemize}
+    \vfill\item Next up: frontiers of various fields
+    \begin{itemize}
+      \addtolength{\baselineskip}{0.5em}
+      \item Labor, IO, macro, public
+      \item We will not have time for all and that's okay
+      \vfill\item[] \sidenote{Matt Might: The Illustrated Guide to a Ph.D. \href{https://matt.might.net/articles/phd-school-in-pictures/}{\uly{Link}}}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+
+
+\end{document}
+

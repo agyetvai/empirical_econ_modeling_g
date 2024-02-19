@@ -1,0 +1,348 @@
+\documentclass[aspectratio=169,compress,t,xcolor=table]{beamer}
+
+%! Mandatory packages
+\usepackage[utf8]{inputenc}                                %! Character encoding
+\usepackage[T1]{fontenc}                                   %! Font encoding
+\usepackage[english]{babel}                                %! Language setting
+\usepackage{graphicx}
+
+%%%% Frame design
+\usetheme{Boadilla}                                        % Design base
+\usecolortheme{default}                                    % Color structure base
+  \newcommand{\myhfill}[1]{\hskip0pt plus 1filll {\small #1}}
+  \newcommand{\sidenote}[1]{\hskip0pt plus 1filll {\fcolorbox{sidenotebg}{sidenotebg}{\small\color{MyStructure} #1}}}
+
+% Colors
+\definecolor{MyBackground}{HTML}{FFFAEE}                   % Cream color with dark text works well for dyslexic readers: FFFAEE
+\definecolor{sidenotebg}{HTML}{FFE4A8}                   % Cream color with dark text works well for dyslexic readers: FFFAEE
+% \definecolor{MyBackground}{HTML}{FFFFFF}                   % White for online slides
+\setbeamercolor{background canvas}{bg=MyBackground}
+\definecolor{MyStructure}{HTML}{005471}
+\setbeamercolor{title}{fg=MyStructure}
+\setbeamercolor{frametitle}{fg=MyStructure}
+\setbeamercolor{structure}{fg=MyStructure}
+\definecolor{emphp}{HTML}{924700}
+\newcommand{\emphc}[1]{{\color{emphp}{#1}}}
+\definecolor{empho}{HTML}{007211}
+\newcommand{\empho}[1]{{\color{empho}{#1}}}
+\definecolor{emphh}{HTML}{CF0606}
+\newcommand{\emphh}[1]{{\color{emphh}{#1}}}
+\definecolor{MyOrange}{HTML}{D17402}
+\definecolor{MyPurple}{HTML}{4E008A}
+\definecolor{MyOrangeBox}{HTML}{F98A22}
+\definecolor{MyPurpleBox}{HTML}{4E008A}
+
+% Fonts
+\usepackage{FiraSans}
+\beamertemplatenavigationsymbolsempty                      % Disable navigation bar
+
+% Enumerate / itemize design
+\setbeamertemplate{enumerate items}[default]
+\setbeamertemplate{itemize items}{}
+\setbeamertemplate{itemize subitem}[circle]
+\setbeamertemplate{section in toc}[sections numbered]
+
+% % Add extra space on the right for Zoom video
+% \setbeamersize{text margin right=3.0cm}
+% \setlength{\leftmargini}{0pt}
+% \setbeamertemplate{background canvas}{\begin{tikzpicture}
+% \useasboundingbox (0,0) rectangle (\paperwidth,\paperheight);
+% \fill [color=MyStructure] (0.875\paperwidth,0) rectangle (\paperwidth,\paperheight);
+% \end{tikzpicture}} 
+
+% Footer
+\setbeamertemplate{footline}
+{
+ \hbox{%
+  \begin{beamercolorbox}[wd=.15\paperwidth,ht=2.6ex,dp=1ex,center]{section in foot}%
+    \usebeamerfont{section in foot}\insertshortauthor
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.8\paperwidth,ht=2.6ex,dp=1ex,center]{section in foot}%
+    \usebeamerfont{section in foot}\insertshorttitle
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.05\paperwidth,ht=2.6ex,dp=1ex,center]{subsection in foot}%
+    \usebeamerfont{section in foot} \color{MyStructure}{\insertframenumber}
+  \end{beamercolorbox}}%
+
+  \vskip0pt%
+}
+\setbeamertemplate{frametitle}[default][left]              % Push frame title to left
+\setbeamertemplate{navigation symbols}{}                   % Remove navigation symbols
+
+\renewcommand\textbullet{\ensuremath{\bullet}}             % Opress textbullet font warning
+\usepackage{appendixnumberbeamer}                          % Restart slide numbering for backup slides (\appendix)
+
+% Roadmap
+\usepackage{environ}
+\NewEnviron{roadmap}[1][]{%
+  \setbeamercolor{background canvas}{bg=MyStructure}
+  \setbeamercolor{normal text}{fg=MyBackground}
+  \begin{frame}[c]
+    \centerline{\huge \color{MyBackground} \textbf{#1}}
+  \end{frame}
+  \addtocounter{framenumber}{-1}
+}
+
+% Text packages
+% \usepackage{enumerate}                                     % Custom enumeration lists
+\usepackage{footmisc}                                      % Stable footnotes in headings
+\usepackage{natbib}                                        % Bibliography
+\usepackage{hyperref}                                      % Hyperreferences
+    \hypersetup{urlcolor=MyStructure}
+\usepackage{multicol}                                      % Multiple columns in text
+\usepackage[nointegrals]{wasysym}                          % WASY2 symbols for contradiction \lightning
+\usepackage{algorithm}                                     % Pseudocode packages
+\usepackage{algpseudocode}
+\usepackage{setspace}                                      % Custom line spacing
+% Better underline: https://alexwlchan.net/2017/10/latex-underlines/
+\usepackage{contour}
+\usepackage[normalem]{ulem}
+  \renewcommand{\ULdepth}{1.8pt}
+  \contourlength{0.8pt}
+  \newcommand{\ul}[1]{%
+    \uline{\phantom{#1}}%
+    \llap{\contour{MyBackground}{#1}}%
+  }
+  \newcommand{\uly}[1]{%
+    \uline{\phantom{#1}}%
+    \llap{\contour{sidenotebg}{#1}}%
+  }
+
+% Figure and table packages
+\usepackage{float}                                         % Figure floats
+\usepackage[position=top,labelformat=empty]{subfig}        % Subfigures
+\usepackage{multirow}                                      % Merged rows in tables
+\usepackage{dcolumn}                                       % Custom table delimiters
+    \newcolumntype{d}[1]{D{.}{.}{#1}}
+    \newcommand\hd[1]{\multicolumn{1}{c}{#1}}
+\usepackage[labelfont=bf, font=normalsize]{caption}        % Bold captions
+    \captionsetup{format=hang}
+\usepackage{array}                                         % Reveal table by columns
+\usepackage{animate}                                       % Animated figures, GIF-like appearance
+\usepackage{media9}                                        % For \mediabutton
+\usepackage{booktabs}
+
+% Graphics packages
+\usepackage{tikz}                                          % TikZ drawings
+  \usetikzlibrary{patterns}
+\usepackage{pgfplots}                                      % PGFPlots plots
+  \pgfplotsset{compat=1.11}
+
+% Math packages
+\usepackage{amsmath}                                       % AMS math package
+\usepackage{mathtools}                                     % Extra math tools
+\usepackage{amssymb}                                       % Math symbols
+\usepackage{amsthm}                                        % Custom theorem environments
+\usepackage{units}                                         % Numerical fractions
+\usepackage{centernot}                                     % Logical negation in the middle of characters; e.g. not iff
+\usepackage{dsfont}                                        % For indicator function: \(\mathds{1}\)
+
+\renewcommand{\qedsymbol}{$\blacksquare$}                  % QED
+
+% Mathematical operators
+\DeclareMathOperator{\E}{\mathbb{E}}                       % Expected value
+\DeclareMathOperator{\Emax}{\E\!\max}                      % Emax
+\DeclareMathOperator{\var}{var}                            % Variance
+\DeclareMathOperator{\cov}{cov}                            % Covariance
+\DeclareMathOperator{\corr}{corr}                          % Correlation
+\DeclareMathOperator{\avar}{avar}                          % Asymptotic variance
+\DeclareMathOperator*{\plim}{plim}                         % Probability limit
+\DeclareMathOperator{\lag}{lag}                            % Lag operator
+\DeclareMathOperator{\rank}{rank}                          % Rank
+\DeclareMathOperator{\tr}{tr}                              % Trace
+\DeclareMathOperator{\diag}{diag}                          % Diagonal
+\DeclareMathOperator{\I}{I}                                % Identity matrix
+
+\providecommand{\abs}[1]{\left\lvert#1\right\rvert}        % Absolute value
+\providecommand{\norm}[1]{\left\lVert#1\right\rVert}       % Norm
+\providecommand{\ip}[1]{\left\langle#1\right\rangle}       % Inner product
+\providecommand{\csp}{\overline{\mathrm{sp}}}              % Closed span
+\providecommand{\pto}{\overset{p}{\to}}                    % Convergence in probability
+\providecommand{\dto}{\overset{d}{\to}}                    % Convergence in distribution
+
+
+% File paths
+\newcommand{\figpath}{"../../results/graphs/"}
+\newcommand{\idfigpath}{"../../results/graphs/identification/"}
+\newcommand{\tabpath}{"../../results/tables/"}
+
+
+\title[]{Empirical Economic Modeling}
+\subtitle{Public}
+% % Single author
+\author[]{%
+  \texorpdfstring{%
+    Attila Gyetvai \\ \vspace*{0.5em} \footnotesize Bank of Portugal \& IZA \\ \href{https://attilagyetvai.com}{\color{MyStructure}\ul{attilagyetvai.com}}
+  }{Gyetvai}
+}
+% Multiple authors
+% \author[]{%
+%   \texorpdfstring{%
+%     \begin{columns}
+%       \column{.35\textwidth}
+%       \centering
+%       \normalsize Alastair Abigail \\ \scriptsize Somewhere Good \\ \vspace*{1em}
+%       \normalsize Lones Lawry \\ \scriptsize Somewhere Even Better \\
+%       \column{.3\textwidth}
+%       \centering
+%       \normalsize Attila Gyetvai \\ \scriptsize Bank of Portugal, IZA \\ \vspace*{1em}
+%       \normalsize John Smith \\ \scriptsize Good Place
+%     \end{columns}
+%   }
+%   {Arcidiacono, Gyetvai, Jardim, Maurel}
+% }
+\date[]{\footnotesize Spring 2024}
+
+
+\begin{document}
+
+{
+\setbeamertemplate{headline}{}            % Empty header
+\setbeamertemplate{footline}{\centerline{\tiny {\color{gray!50!white} The views expressed here are of the author and do not necessarily reflect those of the Bank of Portugal or the Eurosystem.}}\vspace*{10pt}}    % Disclaimer in footer
+\begin{frame}
+  \titlepage
+\end{frame}
+}
+\addtocounter{framenumber}{-1}
+
+\begin{frame}{Lecture plan}
+  \begin{itemize}
+    \vfill\item {\color{MyStructure}\textbf{Central research questions in public:}} How to design tax systems?
+    \begin{enumerate}
+      \addtolength{\baselineskip}{1em}
+      \item How do various forms of taxation compare?
+      \item How does behavior impact taxation?
+    \end{enumerate}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+Guvenen, Fatih, Gueorgui Kambourov, Burhan Kuruscu, Sergio Ocampo and Daphne Chen (2023). Use It or Lose It: Efficiency and Redistributional Effects of Wealth Taxation. \textit{Quarterly Journal of Economics 138}(2), 835-894.
+  \begin{center}
+    \includegraphics[height=0.3\textheight]{guvenen.jpeg} \hspace*{1em}
+    \includegraphics[height=0.3\textheight]{kambourov.jpg} \hspace*{1em}
+    \includegraphics[height=0.3\textheight]{kuruscu.jpeg} \hspace*{1em}
+    \includegraphics[height=0.3\textheight]{ocampo.jpg} \hspace*{1em}
+    \includegraphics[height=0.3\textheight]{chen.png}
+  \end{center}
+\end{frame}
+\addtocounter{framenumber}{-1}
+
+\begin{frame}{}
+Guvenen, Kambourov, Kuruscu, Ocampo and Chen (2023 QJE). Use It or Lose It \\ \phantom{(Efficiency)} \\ \phantom{Journal of you,}
+  \begin{center}
+    \includegraphics[height=0.3\textheight]{guvenen.jpeg} \hspace*{1em}
+    \includegraphics[height=0.3\textheight]{kambourov.jpg} \hspace*{1em}
+    \includegraphics[height=0.3\textheight]{kuruscu.jpeg} \hspace*{1em}
+    \includegraphics[height=0.3\textheight]{ocampo.jpg} \hspace*{1em}
+    \includegraphics[height=0.3\textheight]{chen.png}
+  \end{center}
+\end{frame}
+\addtocounter{framenumber}{-1}
+
+\begin{frame}{}
+Guvenen, Kambourov, Kuruscu, Ocampo and Chen (2023 QJE). Use It or Lose It 
+  \begin{itemize}
+    \item {\color{MyStructure}\textbf{Research question:}} How does wealth taxation compare to capital taxation?
+    \vfill\item Example: Fredo is bad at business, Michael is good. Government needs to raise \$5M 
+    \begin{center}
+      \includegraphics[width=0.6\textwidth]{gkkoc_tab1.png}
+    \end{center}
+    \vfill\item \(\Rightarrow\) Under wealth taxation, you must use your wealth or you lose it
+    \vfill\item If Fredo would be as good as Michael, form of taxation would not matter!
+    \vfill\item \(\leadsto\) Taxing capital vs.\ wealth is the same with homogeneous rate of return \sidenote{HANK}
+    \vfill\item \ldots but we have empirical evidence that \(r\) is heterogeneous
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+Guvenen, Kambourov, Kuruscu, Ocampo and Chen (2023 QJE). Use It or Lose It 
+  \begin{itemize}
+    \item {\color{MyStructure}\textbf{Research question:}} How does wealth taxation compare to capital taxation?
+    \vfill\item \textit{Entrepreneurial productivity}
+    \vfill\item Everyone is born with ability \(\bar{z}_i\): \(\log \bar{z}_i = \rho_z \log \bar{z}_i^{\text{parent}} + \varepsilon_{\bar{z}_i}\), \(\varepsilon_{\bar{z}_i} \sim N(0,\sigma_{\bar{z}_i}^2)\)
+    \vfill\item \quad \(\Rightarrow\) Some high-ability children will start with low wealth and vice versa
+    \vfill\item \qquad \(\Rightarrow\) Capital misallocation!
+    \vfill\item Productivity evolves: at age \(h\),
+    \begin{align*}
+      z_{ih} = \begin{cases}
+        \bar{z}_i^{\lambda} & \text{if high} \\
+        \bar{z}_i & \text{if low} \\
+        0  & \text{if out}
+      \end{cases}
+      \qquad \text{with} \enskip
+      \Pi = \begin{bmatrix}
+        1-p_1-p_2 & p_1 & p_2 \\
+        0 & 1-p_2 & p_2 \\
+        0 & 0 & 1
+      \end{bmatrix}
+    \end{align*}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+Guvenen, Kambourov, Kuruscu, Ocampo and Chen (2023 QJE). Use It or Lose It 
+  \begin{itemize}
+    \item {\color{MyStructure}\textbf{Research question:}} How does wealth taxation compare to capital taxation?
+    \vfill\item \textit{Labor productivity}
+    \vfill\item Everyone is born with ability \(\kappa_i\): \(\kappa_i = \rho_{\kappa} \kappa_i^{\text{parent}} + \varepsilon_{\kappa_i}\), \(\varepsilon_{\kappa_i} \sim N(0,\sigma_{\kappa_i}^2)\)
+    \vfill\item Productivity evolves: at age \(h\),
+    \begin{align*}
+      \log w_{ih} = \kappa_i + g(h) + e_{ih}\text{,} \qquad e_{ih} \sim AR(1)
+    \end{align*}
+    \vfill\item \quad \(\Rightarrow\) Aggregate labor supply:
+    \begin{align*}
+      L = \int w_{i,h(i)} \ell_{i,h(i)} \, di
+    \end{align*}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+Guvenen, Kambourov, Kuruscu, Ocampo and Chen (2023 QJE). Use It or Lose It 
+  \begin{itemize}
+    \item {\color{MyStructure}\textbf{Research question:}} How does wealth taxation compare to capital taxation?
+    \vfill\item \textit{Production}
+    \vfill\item Entrepreneurs produce intermediate good \(x_{ih} = z_{ih} k_{ih}\)
+    \vfill\item Final good is produced by combining intermediate inputs and labor:
+    \begin{align*}
+      Y = Q^{\alpha} L^{1-\alpha} = \left( \int x_{i,h(i)}^{\mu} \, di \right)^{\frac{\alpha}{\mu}} L^{1-\alpha}
+    \end{align*}
+    \vfill\item \textit{Consumption, labor, bequests}
+    \vfill\item Individuals maximize expected lifetime utility:
+    \begin{align*}
+      \max \, \E \left[ \sum_{h=1}^H \beta^{h-1} (\phi_h u(c_h, 1-\ell_h) + (1-\phi_h) v(b)) \right]
+    \end{align*}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+Guvenen, Kambourov, Kuruscu, Ocampo and Chen (2023 QJE). Use It or Lose It 
+  \begin{itemize}
+    \item {\color{MyStructure}\textbf{Research question:}} How does wealth taxation compare to capital taxation?
+    \vfill\item \textit{Financial markets}
+    \item Assets \(a_{ih}\) can be borrowed subject to some borrowing constraint
+    \vfill\item \textit{Government}
+    \item Capital taxation: taxes on capital income, labor, consumption, bequests
+    \item Wealth taxation: taxes on assets, labor, consumption, bequests
+    \item (Also pensions)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+Guvenen, Kambourov, Kuruscu, Ocampo and Chen (2023 QJE). Use It or Lose It 
+  \begin{itemize}
+    \item {\color{MyStructure}\textbf{Research question:}} How does wealth taxation compare to capital taxation?
+    \vfill\item \textit{Empirics}
+    \item Calibrate model on benchmark US economy with capital taxation
+    \item Compare aggregates under counterfactual wealth taxation
+    \begin{center}
+      \includegraphics[width=0.6\textwidth]{gkkoc_tab5.png}
+    \end{center}
+    \item RN vs.\ BB: due to pensions
+    \item Lots more in paper: welfare, optimal taxation, progressive taxes, transition path, \ldots
+  \end{itemize}
+\end{frame}
+
+
+\end{document}
+

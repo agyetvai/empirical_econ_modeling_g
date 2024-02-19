@@ -1,0 +1,484 @@
+\documentclass[aspectratio=169,compress,t,xcolor=table]{beamer}
+
+%! Mandatory packages
+\usepackage[utf8]{inputenc}                                %! Character encoding
+\usepackage[T1]{fontenc}                                   %! Font encoding
+\usepackage[english]{babel}                                %! Language setting
+\usepackage{graphicx}
+
+%%%% Frame design
+\usetheme{Boadilla}                                        % Design base
+\usecolortheme{default}                                    % Color structure base
+  \newcommand{\myhfill}[1]{\hskip0pt plus 1filll {\small #1}}
+  \newcommand{\sidenote}[1]{\hskip0pt plus 1filll {\fcolorbox{sidenotebg}{sidenotebg}{\small\color{MyStructure} #1}}}
+
+% Colors
+\definecolor{MyBackground}{HTML}{FFFAEE}                   % Cream color with dark text works well for dyslexic readers: FFFAEE
+\definecolor{sidenotebg}{HTML}{FFE4A8}                   % Cream color with dark text works well for dyslexic readers: FFFAEE
+% \definecolor{MyBackground}{HTML}{FFFFFF}                   % White for online slides
+\setbeamercolor{background canvas}{bg=MyBackground}
+\definecolor{MyStructure}{HTML}{005471}
+\setbeamercolor{title}{fg=MyStructure}
+\setbeamercolor{frametitle}{fg=MyStructure}
+\setbeamercolor{structure}{fg=MyStructure}
+\definecolor{emphp}{HTML}{924700}
+\newcommand{\emphc}[1]{{\color{emphp}{#1}}}
+\definecolor{empho}{HTML}{007211}
+\newcommand{\empho}[1]{{\color{empho}{#1}}}
+\definecolor{emphh}{HTML}{CF0606}
+\newcommand{\emphh}[1]{{\color{emphh}{#1}}}
+\definecolor{MyOrange}{HTML}{D17402}
+\definecolor{MyPurple}{HTML}{4E008A}
+\definecolor{MyOrangeBox}{HTML}{F98A22}
+\definecolor{MyPurpleBox}{HTML}{4E008A}
+
+% Fonts
+\usepackage{FiraSans}
+\beamertemplatenavigationsymbolsempty                      % Disable navigation bar
+
+% Enumerate / itemize design
+\setbeamertemplate{enumerate items}[default]
+\setbeamertemplate{itemize items}{}
+\setbeamertemplate{itemize subitem}[circle]
+\setbeamertemplate{section in toc}[sections numbered]
+
+% % Add extra space on the right for Zoom video
+% \setbeamersize{text margin right=3.0cm}
+% \setlength{\leftmargini}{0pt}
+% \setbeamertemplate{background canvas}{\begin{tikzpicture}
+% \useasboundingbox (0,0) rectangle (\paperwidth,\paperheight);
+% \fill [color=MyStructure] (0.875\paperwidth,0) rectangle (\paperwidth,\paperheight);
+% \end{tikzpicture}} 
+
+% Footer
+\setbeamertemplate{footline}
+{
+ \hbox{%
+  \begin{beamercolorbox}[wd=.15\paperwidth,ht=2.6ex,dp=1ex,center]{section in foot}%
+    \usebeamerfont{section in foot}\insertshortauthor
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.8\paperwidth,ht=2.6ex,dp=1ex,center]{section in foot}%
+    \usebeamerfont{section in foot}\insertshorttitle
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.05\paperwidth,ht=2.6ex,dp=1ex,center]{subsection in foot}%
+    \usebeamerfont{section in foot} \color{MyStructure}{\insertframenumber}
+  \end{beamercolorbox}}%
+
+  \vskip0pt%
+}
+\setbeamertemplate{frametitle}[default][left]              % Push frame title to left
+\setbeamertemplate{navigation symbols}{}                   % Remove navigation symbols
+
+\renewcommand\textbullet{\ensuremath{\bullet}}             % Opress textbullet font warning
+\usepackage{appendixnumberbeamer}                          % Restart slide numbering for backup slides (\appendix)
+
+% Roadmap
+\usepackage{environ}
+\NewEnviron{roadmap}[1][]{%
+  \setbeamercolor{background canvas}{bg=MyStructure}
+  \setbeamercolor{normal text}{fg=MyBackground}
+  \begin{frame}[c]
+    \centerline{\huge \color{MyBackground} \textbf{#1}}
+  \end{frame}
+  \addtocounter{framenumber}{-1}
+}
+
+% Text packages
+% \usepackage{enumerate}                                     % Custom enumeration lists
+\usepackage{footmisc}                                      % Stable footnotes in headings
+\usepackage{natbib}                                        % Bibliography
+\usepackage{hyperref}                                      % Hyperreferences
+    \hypersetup{urlcolor=MyStructure}
+\usepackage{multicol}                                      % Multiple columns in text
+\usepackage[nointegrals]{wasysym}                          % WASY2 symbols for contradiction \lightning
+\usepackage{algorithm}                                     % Pseudocode packages
+\usepackage{algpseudocode}
+\usepackage{setspace}                                      % Custom line spacing
+% Better underline: https://alexwlchan.net/2017/10/latex-underlines/
+\usepackage{contour}
+\usepackage[normalem]{ulem}
+  \renewcommand{\ULdepth}{1.8pt}
+  \contourlength{0.8pt}
+  \newcommand{\ul}[1]{%
+    \uline{\phantom{#1}}%
+    \llap{\contour{MyBackground}{#1}}%
+  }
+
+% Figure and table packages
+\usepackage{float}                                         % Figure floats
+\usepackage[position=top,labelformat=empty]{subfig}        % Subfigures
+\usepackage{multirow}                                      % Merged rows in tables
+\usepackage{dcolumn}                                       % Custom table delimiters
+    \newcolumntype{d}[1]{D{.}{.}{#1}}
+    \newcommand\hd[1]{\multicolumn{1}{c}{#1}}
+\usepackage[labelfont=bf, font=normalsize]{caption}        % Bold captions
+    \captionsetup{format=hang}
+\usepackage{array}                                         % Reveal table by columns
+\usepackage{animate}                                       % Animated figures, GIF-like appearance
+\usepackage{media9}                                        % For \mediabutton
+\usepackage{booktabs}
+
+% Graphics packages
+\usepackage{tikz}                                          % TikZ drawings
+  \usetikzlibrary{patterns}
+\usepackage{pgfplots}                                      % PGFPlots plots
+  \pgfplotsset{compat=1.11}
+
+% Math packages
+\usepackage{amsmath}                                       % AMS math package
+\usepackage{mathtools}                                     % Extra math tools
+\usepackage{amssymb}                                       % Math symbols
+\usepackage{amsthm}                                        % Custom theorem environments
+\usepackage{units}                                         % Numerical fractions
+\usepackage{centernot}                                     % Logical negation in the middle of characters; e.g. not iff
+\usepackage{dsfont}                                        % For indicator function: \(\mathds{1}\)
+
+\renewcommand{\qedsymbol}{$\blacksquare$}                  % QED
+
+% Mathematical operators
+\DeclareMathOperator{\E}{\mathbb{E}}                       % Expected value
+\DeclareMathOperator{\Emax}{\E\!\max}                      % Emax
+\DeclareMathOperator{\var}{var}                            % Variance
+\DeclareMathOperator{\cov}{cov}                            % Covariance
+\DeclareMathOperator{\corr}{corr}                          % Correlation
+\DeclareMathOperator{\avar}{avar}                          % Asymptotic variance
+\DeclareMathOperator*{\plim}{plim}                         % Probability limit
+\DeclareMathOperator{\lag}{lag}                            % Lag operator
+\DeclareMathOperator{\rank}{rank}                          % Rank
+\DeclareMathOperator{\tr}{tr}                              % Trace
+\DeclareMathOperator{\diag}{diag}                          % Diagonal
+\DeclareMathOperator{\I}{I}                                % Identity matrix
+
+\providecommand{\abs}[1]{\left\lvert#1\right\rvert}        % Absolute value
+\providecommand{\norm}[1]{\left\lVert#1\right\rVert}       % Norm
+\providecommand{\ip}[1]{\left\langle#1\right\rangle}       % Inner product
+\providecommand{\csp}{\overline{\mathrm{sp}}}              % Closed span
+\providecommand{\pto}{\overset{p}{\to}}                    % Convergence in probability
+\providecommand{\dto}{\overset{d}{\to}}                    % Convergence in distribution
+
+
+% File paths
+\newcommand{\figpath}{"../../results/graphs/"}
+\newcommand{\idfigpath}{"../../results/graphs/identification/"}
+\newcommand{\tabpath}{"../../results/tables/"}
+
+
+\title[]{Empirical Economic Modeling}
+\subtitle{Industrial organization}
+% % Single author
+\author[]{%
+  \texorpdfstring{%
+    Attila Gyetvai \\ \vspace*{0.5em} \footnotesize Bank of Portugal \& IZA \\ \href{https://attilagyetvai.com}{\color{MyStructure}\ul{attilagyetvai.com}}
+  }{Gyetvai}
+}
+% Multiple authors
+% \author[]{%
+%   \texorpdfstring{%
+%     \begin{columns}
+%       \column{.35\textwidth}
+%       \centering
+%       \normalsize Alastair Abigail \\ \scriptsize Somewhere Good \\ \vspace*{1em}
+%       \normalsize Lones Lawry \\ \scriptsize Somewhere Even Better \\
+%       \column{.3\textwidth}
+%       \centering
+%       \normalsize Attila Gyetvai \\ \scriptsize Bank of Portugal, IZA \\ \vspace*{1em}
+%       \normalsize John Smith \\ \scriptsize Good Place
+%     \end{columns}
+%   }
+%   {Arcidiacono, Gyetvai, Jardim, Maurel}
+% }
+\date[]{\footnotesize Spring 2024}
+
+
+\begin{document}
+
+{
+\setbeamertemplate{headline}{}            % Empty header
+\setbeamertemplate{footline}{\centerline{\tiny {\color{gray!50!white} The views expressed here are of the author and do not necessarily reflect those of the Bank of Portugal or the Eurosystem.}}\vspace*{10pt}}    % Disclaimer in footer
+\begin{frame}
+  \titlepage
+\end{frame}
+}
+\addtocounter{framenumber}{-1}
+
+\begin{frame}{Lecture plan}
+  \begin{itemize}
+    \vfill\item {\color{MyStructure}\textbf{Central research question in IO:}} How do firms produce?
+    \begin{itemize}
+      \addtolength{\baselineskip}{1em}
+      \item What is the level of returns to scale?
+      \item How do input coefficients on capital and labor change over time?
+      \item How does adoption of a new technology affect production?
+      \item How much heterogeneity is there in measured productivity across firms?
+      \item What explains such productivity differences?
+      \item How does the allocation of firm inputs relate to productivity?
+    \end{itemize}
+    \vspace*{1em}
+    {\scriptsize Source: Dan Ackerberg's 2017 AEA mini course (\href{https://www.aeaweb.org/content/file?id=3015}{https://www.aeaweb.org/content/file?id=3015})}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+Olley, G.\ Steve and Ariel Pakes (1996). The Dynamics of Productivity in the Telecommunications Equipment Industry. \textit{Econometrica 64}(6), 1263-1297.
+  \begin{center}
+    \includegraphics[height=0.4\textheight]{olley.jpeg} \hspace*{1em}
+    \includegraphics[height=0.4\textheight]{pakes.jpeg}
+  \end{center}
+\end{frame}
+\addtocounter{framenumber}{-1}
+
+\begin{frame}{}
+Olley  and Pakes (1996 ECMA). Dynamics of Productivity in Telcom \\ \phantom{you}
+  \begin{center}
+    \includegraphics[height=0.4\textheight]{olley.jpeg} \hspace*{1em}
+    \includegraphics[height=0.4\textheight]{pakes.jpeg}
+  \end{center}
+\end{frame}
+\addtocounter{framenumber}{-1}
+
+\begin{frame}{}
+Olley  and Pakes (1996 ECMA). Dynamics of Productivity in Telcom
+  \begin{itemize}
+    \item {\color{MyStructure}\textbf{Research question:}} How to estimate production functions?
+    \vfill\item (Log) value added production function with labor and capital inputs:
+    \begin{align*}
+      va_{jt} = \beta_0 + \beta_l l_{jt} + \beta_k k_{jt} + \omega_{jt} + \varepsilon_{jt}
+    \end{align*}
+    \vfill\item \(\omega_{jt}\): Markovian firm productivity (unobserved by economist); \(\omega_{jt} = g(\omega_{jt-1}) + \xi_{jt}\) \\[0.5em]
+    \vfill\item \(\varepsilon_{jt}\): transitory shock
+    \vfill\item \sidenote{What if we estimate this regression with OLS? \pause Omitted variable bias!}
+    \vfill\item Timing: \(k_{jt}\) is predetermined (chosen before \(t\)) \quad \(\Rightarrow \E [\xi_{jt} \,|\, k_{jt}] = 0\) \quad \(\Rightarrow \E [\xi_{jt} k_{jt}] = 0\)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+Olley  and Pakes (1996 ECMA). Dynamics of Productivity in Telcom
+  \begin{itemize}
+    \item {\color{MyStructure}\textbf{Research question:}} How to estimate production functions?
+    \vfill\item {\color{MyStructure}\textit{Million dollar idea:}} use investment to back out productivity
+    \begin{align*}
+      i_{jt} &= \tilde{i}_t(k_{jt}, \omega_{jt}) \quad \Rightarrow \omega_{jt} = \tilde{i}^{-1}_t(k_{jt}, i_{jt}) \quad \text{if \(\tilde{i}_t(\cdot)\) is monotonic in \(\omega_{jt}\)} \\
+      \Rightarrow va_{jt} &= \beta_0 + \beta_l l_{jt} + \underbrace{\beta_k k_{jt} + \tilde{i}^{-1}_t(k_{jt}, i_{jt})}_{\doteq \gamma_t(k_{jt}, i_{jt})} + \varepsilon_{jt}
+    \end{align*}
+    \vfill\item[1.] Regress \(va_{jt}\) on \(l_{jt}\), \(f(k_{jt},i_{jt})\) \quad \(\Rightarrow \text{get } \hat{\beta}_l\), \(\hat{\gamma}_t(\cdot)\)
+    \vfill\item[2.] Get \(\hat{\beta}_k\) from moment condition \(\E [\xi_{jt} k_{jt}] = 0\)
+    \begin{enumerate}[a.]
+      \item Given a guess for \(\beta_k\), write \(\hat{\omega}_{jt} (\beta_k) = \hat{\gamma}_t (k_{jt}, i_{jt}) - \beta_k k_{jt}\)
+      \item Regress \(\hat{\omega}_{jt} (\beta_k)\) nonparametrically on \(\hat{\omega}_{jt-1} (\beta_k)\) \quad \(\Rightarrow \text{get } \hat{\xi}_{jt} (\beta_k)\)
+      \item Evaluate the sample analogue of the moment condition: \(\frac{1}{NT} \sum_{j, t} \hat{\xi}_{jt} (\beta_k) \, k_{jt}\) \\[0.5em]
+      \item[] Iterate steps a--c until \(\beta_k\) minimizes the sample analogue of the moment condition
+    \end{enumerate}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+  Levinsohn, James and Amil Petrin (2003). Estimating Production Functions Using Inputs to Control for Unobservables. \textit{Review of Economic Studies 70}(2), 317-341.
+  \begin{center}
+    \includegraphics[height=0.4\textheight]{levinsohn.jpeg} \hspace*{1em}
+    \includegraphics[height=0.4\textheight]{petrin.jpeg}
+  \end{center}
+\end{frame}
+\addtocounter{framenumber}{-1}
+
+\begin{frame}{}
+Levinsohn and Petrin (2003 REStud). Estimating Production Functions Using Inputs \\ \phantom{you}
+  \begin{center}
+    \includegraphics[height=0.4\textheight]{levinsohn.jpeg} \hspace*{1em}
+    \includegraphics[height=0.4\textheight]{petrin.jpeg}
+  \end{center}
+\end{frame}
+\addtocounter{framenumber}{-1}
+
+\begin{frame}{}
+Levinsohn and Petrin (2003 REStud). Estimating Production Functions Using Inputs
+  \begin{itemize}
+    \vfill\item Investment is likely not monotonic in productivity
+    \vfill\item If it were, firms with \(k_{jt}=k\) and \(i_{jt}=0\) (many in data!) had the same productivity
+    \vfill\item {\color{MyStructure}\textbf{Research question:}} How to fix OP?
+    \vfill\item {\color{MyStructure}\textit{Million dollar idea:}} use intermediate inputs instead
+    \begin{align*}
+      m_{jt} &= \tilde{m}_t (k_{jt}, \omega_{jt}) \quad \Rightarrow \omega_{jt} = \tilde{m}^{-1}_t(k_{jt}, m_{jt}) \\[0.5em]
+      \Rightarrow va_{jt} &= \beta_0 + \beta_l l_{jt} + \underbrace{\beta_k k_{jt} + \tilde{m}^{-1}_t(k_{jt}, m_{jt})}_{\doteq \gamma_t (k_{jt}, m_{jt})} + \varepsilon_{jt}
+    \end{align*}
+    \vfill\item Estimation is analogous to OP
+    \vfill\item Extra moment condition for the extra parameter: \(\E[(\xi_{jt} + \varepsilon_{jt}) m_{jt}] = 0\)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+Ackerberg, Daniel A., Kevin Caves and Garth Frazer (2015). Identification Properties of Recent Production Function Estimators. \textit{Econometrica 83}(6), 2411-2451.
+  \begin{center}
+    \includegraphics[height=0.4\textheight]{ackerberg.jpeg} \hspace*{1em}
+    \includegraphics[height=0.4\textheight]{caves.jpeg} \hspace*{1em}
+    \includegraphics[height=0.4\textheight]{frazer.jpeg}
+  \end{center}
+\end{frame}
+\addtocounter{framenumber}{-1}
+
+
+\begin{frame}{}
+Ackerberg, Caves and Frazer (2015 ECMA). Identification of Production Functions \\ \phantom{,ou}
+  \begin{center}
+    \includegraphics[height=0.4\textheight]{ackerberg.jpeg} \hspace*{1em}
+    \includegraphics[height=0.4\textheight]{caves.jpeg} \hspace*{1em}
+    \includegraphics[height=0.4\textheight]{frazer.jpeg}
+  \end{center}
+\end{frame}
+\addtocounter{framenumber}{-1}
+
+\begin{frame}{}
+Ackerberg, Caves and Frazer (2015 ECMA). Identification of Production Functions
+  \begin{itemize}
+    \vfill\item Labor cannot be chosen independently of capital and intermediate inputs!
+    \begin{align*}
+      l_{jt} = \tilde{l}_t(k_{jt}, \omega_{jt}) = \tilde{l}_t(k_{jt}, \tilde{m}^{-1}_t(k_{jt}, m_{jt})) \doteq \tilde{\tilde{l}}_{t} (k_{jt}, m_{jt})
+    \end{align*}
+    \vfill\item {\color{MyStructure}\textbf{Research question:}} How to fix OP/LP?
+    \vfill\item {\color{MyStructure}\textit{Million dollar idea:}} drop first stage and express \(m_{jt} = \tilde{m}_t (l_{jt}, k_{jt}, \omega_{jt})\)
+    \begin{align*}
+      va_{jt} &= \beta_0 + \beta_l l_{jt} + \beta_k k_{jt} + \omega_{jt} + \varepsilon_{jt} \\[0.5em]
+      \Rightarrow va_{jt} &= \underbrace{\beta_0 + \beta_l l_{jt} + \beta_k k_{jt} + \tilde{m}^{-1}_t(l_{jt}, k_{jt}, m_{jt})}_{\doteq \gamma_t (l_{jt}, k_{jt}, m_{jt})} + \varepsilon_{jt}
+    \end{align*}
+    \vfill\item Estimation is analogous to 2nd stage of OP/LP
+    \vfill\item Extra moment condition for the extra parameter: \(\E[\xi_{jt} l_{jt-1}] = 0\)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+Gandhi, Amit, Salvador Navarro and David A. Rivers (2020). On the Identification of Gross Output Production Functions. \textit{Journal of Political Economy 128}(8), 2973-3016.
+  \begin{center}
+    \includegraphics[height=0.4\textheight]{gandhi.jpeg} \hspace*{1em}
+    \includegraphics[height=0.4\textheight]{navarro.jpg} \hspace*{1em}
+    \includegraphics[height=0.4\textheight]{rivers.jpg}
+  \end{center}
+\end{frame}
+\addtocounter{framenumber}{-1}
+
+\begin{frame}{}
+Gandhi, Navarro and Rivers (2020 JPE). Gross Output Production Functions \\ \phantom{you}
+  \begin{center}
+    \includegraphics[height=0.4\textheight]{gandhi.jpeg} \hspace*{1em}
+    \includegraphics[height=0.4\textheight]{navarro.jpg} \hspace*{1em}
+    \includegraphics[height=0.4\textheight]{rivers.jpg}
+  \end{center}
+\end{frame}
+\addtocounter{framenumber}{-1}
+
+\begin{frame}{}
+Gandhi, Navarro and Rivers (2020 JPE). Gross Output Production Functions 
+  \begin{itemize}
+    \vfill\item OP/LP/ACF estimate value added so \(m_{jt}\) does not directly enter production
+    \vfill\item \ldots except if production is Leontief and firms perfectly optimize in each \(t\):
+    \begin{align*}
+      va_{jt} &= \min \lbrace f(l_{jt}, k_{jt}) + \omega_{jt}, g(m_{jt}) \rbrace + \varepsilon_{jt} \\
+      \Rightarrow\text{gross output } go_{jt} &= \min \lbrace f(l_{jt}, k_{jt}) + \omega_{jt}, g(m_{jt}) \rbrace + m_{jt} + \varepsilon_{jt}
+    \end{align*}
+    \vfill\item This functional form is rather restrictive
+    \vfill\item {\color{MyStructure}\textbf{Research question:}} How can we estimate \(go_{jt} = f(l_{jt}, k_{jt}, m_{jt}) + \omega_{jt} + \varepsilon_{jt}\)?
+    % \vfill\item {\color{MyStructure}\textit{Million dollar idea:}} use the firm's first-order condition
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+Gandhi, Navarro and Rivers (2020 JPE). Gross Output Production Functions 
+  \begin{itemize}
+    \item {\color{MyStructure}\textbf{Research question:}} How can we estimate \(go_{jt} = f(l_{jt}, k_{jt}, m_{jt}) + \omega_{jt} + \varepsilon_{jt}\)?
+    \vfill\item {\color{MyStructure}\textit{Million dollar idea:}} use the firm's first-order condition for identification
+    \vfill\item With price-taking firms (\(P_t\), \(R_t\)) \& predetermined labor and capital:
+    \begin{align*}
+      \max_{M_{jt}} &\, P_t \E_t [F(L_{jt}, K_{jt}, M_{jt}) e^{\omega_{jt} + \varepsilon_{jt}}] - R_t M_{jt}
+    \end{align*}
+    \pause
+    \begin{align*}
+      \leadsto 0 =&\, P_t \frac{\partial}{\partial M_{jt}} F(L_{jt}, K_{jt}, M_{jt}) e^{\omega_{jt}} \E_t [e^{\varepsilon_{jt}}] - R_t \\
+      f&(l_{jt}, k_{jt}, m_{jt}) + \omega_{jt} = r_t - p_t - \ln (\E_t [e^{\varepsilon_{jt}}]) \\
+      \Rightarrow m_{jt} &= \tilde{m}_t (l_{jt}, k_{jt}, \omega_{jt}) \quad \Rightarrow \omega_{jt} = \tilde{m}^{-1}_t (l_{jt}, k_{jt}, m_{jt})
+    \end{align*}
+    \vfill\item Estimation is similar to ACF
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Taking stock}
+  \begin{itemize}
+    \vfill\item Production function estimation is useful everywhere
+    \begin{itemize}
+      \vfill\item Academia: macro, labor, education, \ldots
+      \vfill\item Industry: antitrust, litigation, Big Tech, \ldots
+    \end{itemize}
+    \vfill\item Canned estimation packages
+    \begin{itemize}
+      \vfill\item OP/LP/ACF: \texttt{prodest} in Stata
+      \vfill\item GNR: \texttt{gnrprod} in R
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+{
+\setbeamercolor{background canvas}{bg=sidenotebg}
+\begin{frame}[fragile]{Where to find data \myhfill{Sidenote}}
+  \begin{itemize}
+    \vfill\item Minimize GIGO (garbage in, garbage out)
+    \vfill\item Search for as granular data as possible
+    \vfill\item Always explore the raw data first!
+    \vfill\item Useful micro data sources:
+    \begin{itemize}
+      \addtolength{\baselineskip}{0.5em}
+      \item CERS Databank: go-to source for Hungarian micro data
+      \item National Longitudinal Survey of Youth (NLSY97, NLSY79): US labor data by BLS
+      \item Survey of Income and Program Participation (SIPP) by Census Bureau
+      \item EU Statistics on Income and Living Conditions (EU-SILC) by Eurostat
+      \item Augment with simulated tax data (TAXSIM for US, EUROMOD for EU, TAXBEN for UK)
+      \item \href{https://docs.google.com/spreadsheets/d/1xjw5Z0LLK4Fp-vrEK523uvMnSfxtJOb_5f_vKUrZJDg/edit#gid=0}{\color{MyStructure}\underline{Collection of several data sources here}} (also saved in materials)
+      \item Friends and family
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Unified approach in practice \myhfill{Sidenote}}
+  \begin{enumerate}[a.]
+    \vfill\item Find a broad topic that interests you
+    \vfill\item Find the most granular base data available
+    \vfill\item Identify the strengths of the data
+    \begin{itemize}
+      \item Unique information, policy variation, \ldots
+    \end{itemize}
+    \vfill\item 
+    \begin{enumerate}[1.]
+      \vfill\item[0.] Formulate a relevant and important research question
+      \vfill\item Describe the underlying economic behavior
+      \vfill\item Describe the ideal experiment that could identify the structural parameters
+      \vfill\item Attempt to reduce the model
+      \vfill\item Quantify policy implications
+    \end{enumerate}
+    \vfill\item[] Iterate until you have a strong pitch for a paper
+  \end{enumerate}
+\end{frame}
+}
+
+\begin{frame}{Frontiers of IO}
+  \begin{itemize}
+    \vfill\item {\color{MyStructure}\textbf{Central research question in IO:}} How do firms produce?
+    \begin{itemize}
+      \item Production function estimation: we got to the frontier
+      \item \ldots
+    \end{itemize}
+    \vfill\item Other central questions:
+    \begin{itemize}
+      \item How do firms respond to demand shocks?
+      \item What is the origin and dynamics of product market power?
+      \item How do firms make entry/exit decisions?
+    \end{itemize}
+    \vfill\item Things we do not cover:
+    \begin{itemize}
+      \item Industry dynamics
+      \item Strategic interactions (empirical games)
+      \item \ldots
+      \item See Sergey Lychagin's syllabus for more
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+
+
+\end{document}
+

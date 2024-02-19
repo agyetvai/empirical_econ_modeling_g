@@ -1,0 +1,394 @@
+\documentclass[aspectratio=169,compress,t,xcolor=table]{beamer}
+
+%! Mandatory packages
+\usepackage[utf8]{inputenc}                                %! Character encoding
+\usepackage[T1]{fontenc}                                   %! Font encoding
+\usepackage[english]{babel}                                %! Language setting
+\usepackage{graphicx}
+
+%%%% Frame design
+\usetheme{Boadilla}                                        % Design base
+\usecolortheme{default}                                    % Color structure base
+  \newcommand{\myhfill}[1]{\hskip0pt plus 1filll {\small #1}}
+  \newcommand{\sidenote}[1]{\hskip0pt plus 1filll {\fcolorbox{sidenotebg}{sidenotebg}{\small\color{MyStructure} #1}}}
+
+% Colors
+\definecolor{MyBackground}{HTML}{FFFAEE}                   % Cream color with dark text works well for dyslexic readers: FFFAEE
+\definecolor{sidenotebg}{HTML}{FFE4A8}                   % Cream color with dark text works well for dyslexic readers: FFFAEE
+% \definecolor{MyBackground}{HTML}{FFFFFF}                   % White for online slides
+\setbeamercolor{background canvas}{bg=MyBackground}
+\definecolor{MyStructure}{HTML}{005471}
+\setbeamercolor{title}{fg=MyStructure}
+\setbeamercolor{frametitle}{fg=MyStructure}
+\setbeamercolor{structure}{fg=MyStructure}
+\definecolor{emphp}{HTML}{924700}
+\newcommand{\emphc}[1]{{\color{emphp}{#1}}}
+\definecolor{empho}{HTML}{007211}
+\newcommand{\empho}[1]{{\color{empho}{#1}}}
+\definecolor{emphh}{HTML}{CF0606}
+\newcommand{\emphh}[1]{{\color{emphh}{#1}}}
+\definecolor{MyOrange}{HTML}{D17402}
+\definecolor{MyPurple}{HTML}{4E008A}
+\definecolor{MyOrangeBox}{HTML}{F98A22}
+\definecolor{MyPurpleBox}{HTML}{4E008A}
+
+% Fonts
+\usepackage{FiraSans}
+\beamertemplatenavigationsymbolsempty                      % Disable navigation bar
+
+% Enumerate / itemize design
+\setbeamertemplate{enumerate items}[default]
+\setbeamertemplate{itemize items}{}
+\setbeamertemplate{itemize subitem}[circle]
+\setbeamertemplate{section in toc}[sections numbered]
+
+% % Add extra space on the right for Zoom video
+% \setbeamersize{text margin right=3.0cm}
+% \setlength{\leftmargini}{0pt}
+% \setbeamertemplate{background canvas}{\begin{tikzpicture}
+% \useasboundingbox (0,0) rectangle (\paperwidth,\paperheight);
+% \fill [color=MyStructure] (0.875\paperwidth,0) rectangle (\paperwidth,\paperheight);
+% \end{tikzpicture}} 
+
+% Footer
+\setbeamertemplate{footline}
+{
+ \hbox{%
+  \begin{beamercolorbox}[wd=.15\paperwidth,ht=2.6ex,dp=1ex,center]{section in foot}%
+    \usebeamerfont{section in foot}\insertshortauthor
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.8\paperwidth,ht=2.6ex,dp=1ex,center]{section in foot}%
+    \usebeamerfont{section in foot}\insertshorttitle
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.05\paperwidth,ht=2.6ex,dp=1ex,center]{subsection in foot}%
+    \usebeamerfont{section in foot} \color{MyStructure}{\insertframenumber}
+  \end{beamercolorbox}}%
+
+  \vskip0pt%
+}
+\setbeamertemplate{frametitle}[default][left]              % Push frame title to left
+\setbeamertemplate{navigation symbols}{}                   % Remove navigation symbols
+
+\renewcommand\textbullet{\ensuremath{\bullet}}             % Opress textbullet font warning
+\usepackage{appendixnumberbeamer}                          % Restart slide numbering for backup slides (\appendix)
+
+% Roadmap
+\usepackage{environ}
+\NewEnviron{roadmap}[1][]{%
+  \setbeamercolor{background canvas}{bg=MyStructure}
+  \setbeamercolor{normal text}{fg=MyBackground}
+  \begin{frame}[c]
+    \centerline{\huge \color{MyBackground} \textbf{#1}}
+  \end{frame}
+  \addtocounter{framenumber}{-1}
+}
+
+% Text packages
+% \usepackage{enumerate}                                     % Custom enumeration lists
+\usepackage{footmisc}                                      % Stable footnotes in headings
+\usepackage{natbib}                                        % Bibliography
+\usepackage{hyperref}                                      % Hyperreferences
+    \hypersetup{urlcolor=MyStructure}
+\usepackage{multicol}                                      % Multiple columns in text
+\usepackage[nointegrals]{wasysym}                          % WASY2 symbols for contradiction \lightning
+\usepackage{algorithm}                                     % Pseudocode packages
+\usepackage{algpseudocode}
+\usepackage{setspace}                                      % Custom line spacing
+% Better underline: https://alexwlchan.net/2017/10/latex-underlines/
+\usepackage{contour}
+\usepackage[normalem]{ulem}
+  \renewcommand{\ULdepth}{1.8pt}
+  \contourlength{0.8pt}
+  \newcommand{\ul}[1]{%
+    \uline{\phantom{#1}}%
+    \llap{\contour{MyBackground}{#1}}%
+  }
+  \newcommand{\uly}[1]{%
+    \uline{\phantom{#1}}%
+    \llap{\contour{sidenotebg}{#1}}%
+  }
+
+% Figure and table packages
+\usepackage{float}                                         % Figure floats
+\usepackage[position=top,labelformat=empty]{subfig}        % Subfigures
+\usepackage{multirow}                                      % Merged rows in tables
+\usepackage{dcolumn}                                       % Custom table delimiters
+    \newcolumntype{d}[1]{D{.}{.}{#1}}
+    \newcommand\hd[1]{\multicolumn{1}{c}{#1}}
+\usepackage[labelfont=bf, font=normalsize]{caption}        % Bold captions
+    \captionsetup{format=hang}
+\usepackage{array}                                         % Reveal table by columns
+\usepackage{animate}                                       % Animated figures, GIF-like appearance
+\usepackage{media9}                                        % For \mediabutton
+\usepackage{booktabs}
+
+% Graphics packages
+\usepackage{tikz}                                          % TikZ drawings
+  \usetikzlibrary{patterns}
+\usepackage{pgfplots}                                      % PGFPlots plots
+  \pgfplotsset{compat=1.11}
+
+% Math packages
+\usepackage{amsmath}                                       % AMS math package
+\usepackage{mathtools}                                     % Extra math tools
+\usepackage{amssymb}                                       % Math symbols
+\usepackage{amsthm}                                        % Custom theorem environments
+\usepackage{units}                                         % Numerical fractions
+\usepackage{centernot}                                     % Logical negation in the middle of characters; e.g. not iff
+\usepackage{dsfont}                                        % For indicator function: \(\mathds{1}\)
+
+\renewcommand{\qedsymbol}{$\blacksquare$}                  % QED
+
+% Mathematical operators
+\DeclareMathOperator{\E}{\mathbb{E}}                       % Expected value
+\DeclareMathOperator{\Emax}{\E\!\max}                      % Emax
+\DeclareMathOperator{\var}{var}                            % Variance
+\DeclareMathOperator{\cov}{cov}                            % Covariance
+\DeclareMathOperator{\corr}{corr}                          % Correlation
+\DeclareMathOperator{\avar}{avar}                          % Asymptotic variance
+\DeclareMathOperator*{\plim}{plim}                         % Probability limit
+\DeclareMathOperator{\lag}{lag}                            % Lag operator
+\DeclareMathOperator{\rank}{rank}                          % Rank
+\DeclareMathOperator{\tr}{tr}                              % Trace
+\DeclareMathOperator{\diag}{diag}                          % Diagonal
+\DeclareMathOperator{\I}{I}                                % Identity matrix
+
+\providecommand{\abs}[1]{\left\lvert#1\right\rvert}        % Absolute value
+\providecommand{\norm}[1]{\left\lVert#1\right\rVert}       % Norm
+\providecommand{\ip}[1]{\left\langle#1\right\rangle}       % Inner product
+\providecommand{\csp}{\overline{\mathrm{sp}}}              % Closed span
+\providecommand{\pto}{\overset{p}{\to}}                    % Convergence in probability
+\providecommand{\dto}{\overset{d}{\to}}                    % Convergence in distribution
+
+
+% File paths
+\newcommand{\figpath}{"../../results/graphs/"}
+\newcommand{\idfigpath}{"../../results/graphs/identification/"}
+\newcommand{\tabpath}{"../../results/tables/"}
+
+
+\title[]{Empirical Economic Modeling}
+\subtitle{Macro}
+% % Single author
+\author[]{%
+  \texorpdfstring{%
+    Attila Gyetvai \\ \vspace*{0.5em} \footnotesize Bank of Portugal \& IZA \\ \href{https://attilagyetvai.com}{\color{MyStructure}\ul{attilagyetvai.com}}
+  }{Gyetvai}
+}
+% Multiple authors
+% \author[]{%
+%   \texorpdfstring{%
+%     \begin{columns}
+%       \column{.35\textwidth}
+%       \centering
+%       \normalsize Alastair Abigail \\ \scriptsize Somewhere Good \\ \vspace*{1em}
+%       \normalsize Lones Lawry \\ \scriptsize Somewhere Even Better \\
+%       \column{.3\textwidth}
+%       \centering
+%       \normalsize Attila Gyetvai \\ \scriptsize Bank of Portugal, IZA \\ \vspace*{1em}
+%       \normalsize John Smith \\ \scriptsize Good Place
+%     \end{columns}
+%   }
+%   {Arcidiacono, Gyetvai, Jardim, Maurel}
+% }
+\date[]{\footnotesize Spring 2024}
+
+
+\begin{document}
+
+{
+\setbeamertemplate{headline}{}            % Empty header
+\setbeamertemplate{footline}{\centerline{\tiny {\color{gray!50!white} The views expressed here are of the author and do not necessarily reflect those of the Bank of Portugal or the Eurosystem.}}\vspace*{10pt}}    % Disclaimer in footer
+\begin{frame}
+  \titlepage
+\end{frame}
+}
+\addtocounter{framenumber}{-1}
+
+\begin{frame}{Lecture plan}
+  \begin{itemize}
+    \vfill\item {\color{MyStructure}\textbf{Central research questions in macro:}}
+    \begin{enumerate}
+      \addtolength{\baselineskip}{1em}
+      \item Why are some countries poorer than others?
+      \item[\(\leadsto\)] Why are there large GDP differences across countries? Total factor productivity (TFP)!
+      \item Why are some countries more productive than others?
+      \item[\(\leadsto\)] Why are there large TFP differences across countries? Financial frictions?
+    \end{enumerate}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+Midrigan, Virgiliu and Daniel Yi Xu (2014). Finance and Misallocation: Evidence from Plant-Level Data. \textit{American Economic Review 104}(2), 422-458.
+  \begin{center}
+    \includegraphics[height=0.4\textheight]{midrigan.jpeg} \hspace*{1em}
+    \includegraphics[height=0.4\textheight]{xu.jpg}
+  \end{center}
+\end{frame}
+\addtocounter{framenumber}{-1}
+
+\begin{frame}{}
+Midrigan and Xu (2014 AER). Finance and Misallocation \\ \phantom{,ou}
+  \begin{center}
+    \includegraphics[height=0.4\textheight]{midrigan.jpeg} \hspace*{1em}
+    \includegraphics[height=0.4\textheight]{xu.jpg}
+  \end{center}
+\end{frame}
+\addtocounter{framenumber}{-1}
+
+\begin{frame}{}
+Midrigan and Xu (2014 AER). Finance and Misallocation
+  \begin{itemize}
+    \item {\color{MyStructure}\textbf{Research question:}} How much of TFP differences are due to financial frictions?
+    \vfill\item Financial frictions reduce TFP in two key ways:
+    \vfill\item[1.] Entry and technology adoption
+    \vfill\item[2.] Capital misallocation \\[0.5em]
+    Misallocation: the {\color{MyStructure}\textit{social planner}} could {\color{MyStructure}\textit{feasibly}} reallocate resources to increase the {\color{MyStructure}\textit{welfare}} of the {\color{MyStructure}\textit{representative agent}} (Klenow, 2020, \href{https://youtu.be/DFAshuz_e3M?si=lH5wVfnbw6gLI-SS}{\ul{link to video}})
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+Midrigan and Xu (2014 AER). Finance and Misallocation
+  \begin{itemize}
+    \item {\color{MyStructure}\textbf{Research question:}} How much of TFP differences are due to financial frictions?
+    \item Traditional vs.\ modern sectors, everyone starts in traditional
+    \vfill\item {\color{MyStructure}\textit{Traditional sector:}} with permanent productivity \(z\) and transitory productivity \(e_t\),
+    \begin{align*}
+      Y_t = \exp(z + e_t)^{1-\eta} L_t^{\eta}, \quad \eta<1 \enskip \text{(DRS)}
+    \end{align*}
+    Producers maximize lifetime utility s.t.\ the budget constraint:
+    \begin{align*}
+      C_t &= Y_t - w L_t - (1-r) D_t + D_{t+1}
+    \end{align*}
+    \(D_t\): debt position; \(D_{t+1} \leq 0\) (no borrowing)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+Midrigan and Xu (2014 AER). Finance and Misallocation
+  \begin{itemize}
+    \item {\color{MyStructure}\textbf{Research question:}} How much of TFP differences are due to financial frictions?
+    \item Entry to the modern sector requires paying an upfront cost
+    \vfill\item {\color{MyStructure}\textit{Entering the modern sector:}} need to finance initial capital
+    \begin{align*}
+      D_{t+1} \leq {\color{red}\theta} (K_{t+1} + \exp(z) \kappa)
+    \end{align*}
+    \(K_{t+1}\): physical capital, \(\exp(z) \kappa\): intangible capital \\
+    \({\color{red}\theta} \in [0,1]\): strength of financial frictions (degree of financial development)
+    \vfill\item Budget constraint:
+    \begin{align*}
+      C_t + K_{t+1} + \exp(z) \kappa &= Y_t - w L_t - (1-r) D_t + D_{t+1} + {\color{red}\theta} {\color{blue}\chi} (\text{price of future profits})_t
+    \end{align*}
+    \({\color{red}\theta} {\color{blue}\chi} \enskip ({\color{blue}\chi} \in [0,1])\): fraction of claims to future profits
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+Midrigan and Xu (2014 AER). Finance and Misallocation
+  \begin{itemize}
+    \item {\color{MyStructure}\textbf{Research question:}} How much of TFP differences are due to financial frictions?
+    \vfill\item {\color{MyStructure}\textit{Modern sector:}} 
+    \begin{align*}
+      Y_t &= \exp(z + e_t + \phi)^{1-\eta} (L_t^{\alpha} K_t^{1-\alpha})^{\eta} \\
+      \Pi_t &= Y_t - wL_t - (r+\delta)K_t
+    \end{align*}
+    \(\phi\): relative productivity of modern sector
+    \vfill\item Budget constraint:
+    \begin{align*}
+      C_t + K_{t+1} - (1-\delta)K_t &= Y_t - wL_t - (1-r) D_t + D_{t+1} - {\color{red}\theta} {\color{blue}\chi} \Pi_t
+    \end{align*}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+Midrigan and Xu (2014 AER). Finance and Misallocation
+  \begin{itemize}
+    \item {\color{MyStructure}\textbf{Research question:}} How much of TFP differences are due to financial frictions?
+    \vfill\item Rescale by \(\exp(z)\), markets clear, balanced growth path (\(\gamma\)), \ldots
+    \vfill\item Total output in modern sector: given mass of producers \(M\),
+    \begin{align*}
+      Y = \underbrace{\exp(\phi)^{1-\eta} \frac{\left( \int_{i \in M} \exp(e_i) (r + \delta + \mu_i)^{-\frac{(1-\alpha)\eta}{1-\eta}} \, di \right)^{1-\alpha\eta}}{\left( \int_{i \in M} \exp(e_i) (r + \delta + \mu_i)^{\frac{\alpha\eta-1}{1-\eta}} \, di \right)^{(1-\alpha)\eta}}}_{\text{TFP}} \, (L^{\alpha} K^{1-\alpha})^{\eta}
+    \end{align*}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+Midrigan and Xu (2014 AER). Finance and Misallocation
+  \begin{itemize}
+    \item {\color{MyStructure}\textbf{Research question:}} How much of TFP differences are due to financial frictions?
+    \item Recall: {\color{MyStructure}1.} entry and technology adoption, {\color{MyStructure}2.} capital misallocation
+    \pause
+    \vfill\item[2.] Total output in modern sector if we can reallocate capital but \(M\) is fixed:
+    \begin{align*}
+      Y^{e2} = \underbrace{\exp(\phi)^{1-\eta} \left( \int_i \exp(e_i) \, di \right)^{1-\eta}}_{\text{TFP}^{e2}} \, (L^{\alpha} K^{1-\alpha})^{\eta}
+    \end{align*}
+    \vfill\item \(\text{TFP loss}^2 = \text{TFP}^{e2} - \text{TFP}\)
+    \item With \((APK_i, e_i) \sim \log N\):
+    \begin{align*}
+      \text{TFP loss}^2 = \frac{(1-\alpha\eta) (1-\alpha)\eta}{2(1-\eta)} \, \var(\log(APK_i))
+    \end{align*}
+    \item In words: the more dispersed APK is, the larger is TFP loss
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+Midrigan and Xu (2014 AER). Finance and Misallocation
+  \begin{itemize}
+    \item {\color{MyStructure}\textbf{Research question:}} How much of TFP differences are due to financial frictions?
+    \item Recall: {\color{MyStructure}1.} entry and technology adoption, {\color{MyStructure}2.} capital misallocation
+    \vfill\item[1.] Total output in both sectors if we can freely reallocate capital and labor:
+    \begin{align*}
+      Y^{e1} &= \arg\max_{K, L, n^{\tau}_i, n^m_i} \, \left( \sum_i \exp(e_i) n^{\tau}_i \right)^{1-\eta} (1-L)^{\eta} + \left( \sum_i \exp(e_i + \phi) n^m_i \right)^{1-\eta} (L^{\alpha} K^{1-\alpha})^{\eta} \\
+      &\quad - \left( \delta + \frac{\gamma}{\beta} -1 \right) K - \frac{\sum_i n^m_i}{\beta} (\gamma-1)\kappa
+    \end{align*}
+    \vfill\item \(\Rightarrow \text{TFP loss}^1 \supseteq \text{TFP loss}^2\)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+Midrigan and Xu (2014 AER). Finance and Misallocation
+  \begin{itemize}
+    \item {\color{MyStructure}\textbf{Research question:}} How much of TFP differences are due to financial frictions?
+    \item Recall: {\color{MyStructure}1.} entry and technology adoption, {\color{MyStructure}2.} capital misallocation
+    \vfill\item How important is {\color{MyStructure}1.} vs.\ {\color{MyStructure}2.} quantitatively?
+    \item I.e., is \(\widehat{\text{TFP loss}^1}\) much larger than \(\widehat{\text{TFP loss}^2}\)?
+    \vfill\item Data: plant-level data on manufacturing firms in Korea, Colombia, China
+    \begin{itemize}
+      \item Korea: more developed + data from financial crisis
+    \end{itemize}
+    \vfill\item Findings form calibration: \(\widehat{\text{TFP loss}^1} \approx 40\%\),  \(\widehat{\text{TFP loss}^2} \approx 5\%\)
+    \vfill\item \(\Rightarrow\) financial frictions yield large TFP differences but not due to misallocation
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Frontiers of macro}
+  \begin{itemize}
+    \vfill\item {\color{MyStructure}\textbf{Central research questions in macro:}}
+    \begin{itemize}
+      \item Why are some countries poorer/more productive than others?
+      \item Midrigan and Xu (2014 AER): because financial frictions impede entry to modern sector
+      \item Only one (albeit very influential) modern macro paper
+      \item \ldots
+    \end{itemize}
+    \vfill\item Other central questions:
+    \begin{itemize}
+      \item How does a richer notion of heterogeneity impact aggregate outcomes?
+      \item How does the financial sector impact the real economy?
+      \item What is the role of fiscal/monetary policy?
+      \item What is the role of behavior components?
+      \item \ldots
+    \end{itemize}
+    \vfill\item Things we do not cover:
+    \begin{itemize}
+      \item Micro-to-macro (Adrien Couturier, Ben Moll and Rui Sousa’s collection of papers)
+      \item Asset pricing, optimal taxation (Nic Kozeniauskas and László Tétényi’s syllabus)
+      \item Uncertainty, information, polarization (Matthias Kehrig’s syllabus)
+      \item \ldots
+    \end{itemize}
+    \item \sidenote{``Modern macro is applied micro''} \sidenote{\href{https://twitter.com/FedericoHuneeus/status/1676232278031187968}{\uly{Fede Huneeus' X thread}}}
+  \end{itemize}
+\end{frame}
+
+
+\end{document}
+
